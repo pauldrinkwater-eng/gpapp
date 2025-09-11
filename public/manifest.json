@@ -1,6 +1,8 @@
 {
+  "id": "/",
   "name": "Malthouse Surgery",
   "short_name": "Malthouse",
+  "description": "The official Malthouse Surgery patient app.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
