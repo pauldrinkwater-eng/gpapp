@@ -1,243 +1,313 @@
-import { useEffect, useMemo, useState } from 'react';
-import Shell from '../components/Shell';
-import { CalendarDays, Clock, ExternalLink, MapPin, Newspaper, Phone, Search } from 'lucide-react';
+"use client";
 
-// Define Route locally so we don't depend on Shell exporting it
-type Route = 'home' | 'news' | 'hours';
+import Link from "next/link";
 
-type NewsItem = { title: string; url: string; date?: string; excerpt?: string };
-type OpeningDay = { day: string; open: string | null; close: string | null };
-type Hours = { phone?: string; address?: string; days: OpeningDay[] };
-
-function formatDate(iso?: string) {
-  if (!iso) return '';
-  const d = new Date(iso);
-  return d.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' });
-}
-
-function isOpenNow(hours?: Hours) {
-  if (!hours?.days) return { open: false, label: '—' };
-  const now = new Date();
-  const weekday = now.toLocaleDateString(undefined, { weekday: 'long' });
-  const today = hours.days.find(d => d.day === weekday);
-  if (!today || !today.open || !today.close) return { open: false, label: 'Closed today' };
-  const [oh, om] = today.open.split(':').map(Number);
-  const [ch, cm] = today.close.split(':').map(Number);
-  const openT = new Date(now); openT.setHours(oh, om, 0, 0);
-  const closeT = new Date(now); closeT.setHours(ch, cm, 0, 0);
-  const open = now >= openT && now < closeT;
-  return { open, label: open ? `Open now · until ${today.close}` : `Closed · opens ${today.open}` };
-}
-
-export default function Home() {
-  const [route, setRoute] = useState<Route>('home');
-  const [news, setNews] = useState<NewsItem[]>([]);
-  const [hours, setHours] = useState<Hours | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  // Adapter so Shell's onNav: (r: string) => void is satisfied
-  const handleNav = (r: string) => setRoute(r as Route);
-
-  useEffect(() => {
-    let mounted = true;
-    async function load() {
-      setLoading(true);
-      const [nRes, hRes] = await Promise.all([
-        fetch('/api/news').then(r => r.json()),
-        fetch('/api/opening-hours').then(r => r.json()),
-      ]);
-      if (!mounted) return;
-      setNews(nRes.items || []);
-      setHours(hRes);
-      setLoading(false);
-    }
-    load();
-    return () => { mounted = false; };
-  }, []);
-
-  const state = useMemo(() => (hours ? isOpenNow(hours) : { open: false, label: '—' }), [hours]);
-
+export default function HomePage() {
   return (
-    <Shell active={route} onNav={handleNav}>
-      {loading ? (
-        <div className="text-center text-slate-500 py-20">Loading…</div>
-      ) : route === 'home' ? (
-        <div className="space-y-6">
-          <section className="bg-white rounded-2xl shadow-sm border p-4">
-            <div className="flex items-start gap-3">
-              <Clock className="w-5 h-5 mt-0.5" />
-              <div className="flex-1">
-                <p className="text-sm text-slate-500">Today</p>
-                <h2 className="text-lg font-semibold">{state.label}</h2>
-                {hours && (
-                  <div className="mt-3 flex gap-2">
-                    {hours.phone && (
-                      <a href={`tel:${hours.phone}`} className="px-3 py-2 rounded-xl bg-emerald-600 text-white text-sm">Call</a>
-                    )}
-                    {hours.address && (
-                      <a
-                        href={`https://maps.google.com/?q=${encodeURIComponent(hours.address)}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="px-3 py-2 rounded-xl border text-sm flex items-center gap-1"
-                      >
-                        <MapPin className="w-4 h-4"/> Directions
-                      </a>
-                    )}
-                  </div>
-                )}
-              </div>
-            </div>
-          </section>
+    <div className="space-y-6">
+      {/* Hero / Intro */}
+      <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        {/* Small brand kicker – the big NHS banner comes from your Header */}
+        <p className="text-xs uppercase tracking-wide text-gray-500">NHS</p>
+        <h1 className="mt-1 text-xl font-bold text-nhs-blue">Malthouse Surgery</h1>
+        <p className="mt-1 text-sm text-gray-700">Your health, made simpler.</p>
 
-          <section className="bg-white rounded-2xl shadow-sm border">
-            <div className="p-4 border-b">
-              <h3 className="text-base font-semibold flex items-center gap-2"><Newspaper className="w-5 h-5"/> Latest news</h3>
-            </div>
-            <ul className="divide-y">
-              {news.slice(0, 5).map((n, i) => (
-                <li className="p-4" key={i}>
-                  <a href={n.url} target="_blank" rel="noreferrer" className="group block">
-                    <div className="flex items-start justify-between gap-3">
-                      <div>
-                        <h4 className="font-medium group-hover:underline flex items-center gap-2">
-                          {n.title}
-                          <ExternalLink className="w-4 h-4 text-slate-400"/>
-                        </h4>
-                        {n.date && <p className="text-sm text-slate-500 mt-1">{formatDate(n.date)}</p>}
-                        {n.excerpt && <p className="text-sm text-slate-700 mt-2 line-clamp-2">{n.excerpt}</p>}
-                      </div>
-                    </div>
-                  </a>
-                </li>
-              ))}
-            </ul>
-            <div className="p-4 border-t text-right">
-              <a className="text-sm text-emerald-700 hover:underline" href="https://malthousesurgery.co.uk/category/news/" target="_blank" rel="noreferrer">View all news</a>
-            </div>
-          </section>
-        </div>
-      ) : route === 'news' ? (
-        <NewsScreen news={news} />
-      ) : (
-        <HoursScreen hours={hours} onBack={() => setRoute('home')} />
-      )}
-
-      <details className="mt-8 text-sm text-slate-600">
-        <summary className="cursor-pointer">Implementation notes</summary>
-        <div className="mt-3 space-y-2">
-          <p>• API routes scrape server-side and cache for 15 minutes (CDN-friendly).</p>
-          <p>• PWA enabled via <code>next-pwa</code> with offline shell.</p>
-          <p>• Add bank holiday exceptions later (merge in manual overrides if needed).</p>
-        </div>
-      </details>
-    </Shell>
-  );
-}
-
-function NewsScreen({ news }: { news: NewsItem[] }) {
-  const [q, setQ] = useState('');
-  const filtered = useMemo(
-    () => news.filter(n => [n.title, n.excerpt].join(' ').toLowerCase().includes(q.toLowerCase())),
-    [news, q]
-  );
-  return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-2">
-        <div className="relative flex-1">
-          <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-          <input
-            value={q}
-            onChange={e => setQ(e.target.value)}
-            placeholder="Search news"
-            className="w-full pl-9 pr-3 py-2 rounded-xl border bg-white"
-          />
-        </div>
-        <a
-          href="https://malthousesurgery.co.uk/category/news/"
-          target="_blank"
-          rel="noreferrer"
-          className="px-3 py-2 rounded-xl border text-sm flex items-center gap-1"
-        >
-          Site <ExternalLink className="w-4 h-4"/>
-        </a>
-      </div>
-
-      <ul className="space-y-3">
-        {filtered.map((n, i) => (
-          <li key={i} className="bg-white rounded-2xl shadow-sm border p-4">
-            <a href={n.url} target="_blank" rel="noreferrer" className="group block">
-              <h4 className="font-semibold group-hover:underline">{n.title}</h4>
-              {n.date && (
-                <p className="text-sm text-slate-500 mt-1 flex items-center gap-1">
-                  <CalendarDays className="w-4 h-4"/>{formatDate(n.date)}
-                </p>
-              )}
-              {n.excerpt && <p className="text-sm text-slate-700 mt-2">{n.excerpt}</p>}
-            </a>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-function HoursScreen({ hours, onBack }: { hours: Hours | null; onBack: () => void }) {
-  if (!hours) return null;
-  return (
-    <div className="space-y-4">
-      {/* Sticky Back/Home bar */}
-      <div className="sticky top-0 z-50 bg-[#005eb8] text-white px-3 py-2 rounded-b-xl shadow flex items-center justify-between">
-        <button
-          onClick={onBack}
-          className="px-3 py-2 rounded-lg bg-white/15 hover:bg-white/25 font-semibold"
-          aria-label="Go back to home"
-        >
-          ← Back
-        </button>
-        <div className="font-bold">Opening Hours</div>
-        <button
-          onClick={onBack}
-          className="px-3 py-2 rounded-lg bg-white/15 hover:bg-white/25 font-semibold"
-          aria-label="Go to home"
-        >
-          Home
-        </button>
-      </div>
-
-      <div className="bg-white rounded-2xl shadow-sm border p-4">
-        <h3 className="text-base font-semibold">Opening hours</h3>
-        <table className="w-full text-sm mt-3">
-          <tbody>
-            {(hours.days || []).map((d, i) => (
-              <tr key={i} className="border-t">
-                <td className="py-2 text-slate-600">{d.day}</td>
-                <td className="py-2 text-right font-medium">
-                  {d.open ? `${d.open} – ${d.close}` : 'Closed'}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-
-      <div className="grid grid-cols-2 gap-3">
-        {hours.phone && (
-          <a href={`tel:${hours.phone}`} className="bg-emerald-600 text-white rounded-2xl p-4 flex items-center justify-center gap-2">
-            <Phone className="w-5 h-5"/> Call us
-          </a>
-        )}
-        {hours.address && (
+        {/* Quick link to main site + news */}
+        <div className="mt-3 flex flex-wrap gap-3 text-sm">
           <a
-            href={`https://maps.google.com/?q=${encodeURIComponent(hours.address)}`}
-            target="_blank"
-            rel="noreferrer"
-            className="bg-white border rounded-2xl p-4 flex items-center justify-center gap-2"
+            href="https://www.malthousesurgery.co.uk/"
+            className="underline underline-offset-4"
           >
-            <MapPin className="w-5 h-5"/> Directions
+            Main Site
           </a>
-        )}
-      </div>
+          <a
+            href="https://www.malthousesurgery.co.uk/news"
+            className="underline underline-offset-4"
+          >
+            News
+          </a>
+        </div>
+      </section>
+
+      {/* Welcome copy */}
+      <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <h2 className="text-base font-semibold">Welcome to Malthouse Surgery</h2>
+        <p className="mt-1 text-sm text-gray-700">
+          Use this app to quickly access appointments, prescriptions, opening hours, and the latest updates. Everything
+          links straight into our main website so you always get the most up-to-date information.
+        </p>
+      </section>
+
+      {/* Make a Request */}
+      <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <h3 className="text-sm font-medium">Make a Request</h3>
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-2">
+          {/* Make an appointment */}
+          <a
+            href="https://www.malthousesurgery.co.uk/appointments"
+            className="block rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium hover:bg-gray-50"
+          >
+            Make an Appointment
+            <p className="mt-1 text-xs font-normal text-gray-600">
+              Book or request a GP appointment online.
+            </p>
+          </a>
+
+          {/* Prescription Request */}
+          <a
+            href="https://www.malthousesurgery.co.uk/prescriptions"
+            className="block rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium hover:bg-gray-50"
+          >
+            Prescription Request
+            <p className="mt-1 text-xs font-normal text-gray-600">
+              Order your repeat prescriptions online.
+            </p>
+          </a>
+
+          {/* Fit Note */}
+          <a
+            href="https://www.malthousesurgery.co.uk/fit-note"
+            className="block rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium hover:bg-gray-50"
+          >
+            Fit Note
+            <p className="mt-1 text-xs font-normal text-gray-600">
+              Request or renew a fit note online.
+            </p>
+          </a>
+
+          {/* Test Results */}
+          <a
+            href="https://www.malthousesurgery.co.uk/test-results"
+            className="block rounded-lg border border-gray-300 px-4 py-3 text-sm font-medium hover:bg-gray-50"
+          >
+            Test Results
+            <p className="mt-1 text-xs font-normal text-gray-600">Check the results of your tests.</p>
+          </a>
+        </div>
+      </section>
+
+      {/* Flu clinics banner */}
+      <section className="rounded-xl border border-blue-100 bg-nhs-tint p-4 shadow-sm">
+        <h3 className="text-sm font-medium text-nhs-blue">Flu Vaccination Clinics</h3>
+        <p className="mt-1 text-sm text-gray-700">
+          Flu and COVID vaccination clinics are now available to book.
+        </p>
+        <a
+          href="https://www.malthousesurgery.co.uk/news"
+          className="mt-2 inline-flex items-center text-sm font-semibold underline underline-offset-4"
+        >
+          Learn more →
+        </a>
+      </section>
+
+      {/* Opening / Call / Find */}
+      <section className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        {/* Opening Hours */}
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+          <h4 className="text-sm font-medium">Opening Hours</h4>
+          <p className="mt-1 text-sm text-gray-700">See today’s hours and holiday closures.</p>
+          <Link
+            href="/opening-hours"
+            className="mt-2 inline-flex items-center text-sm font-semibold underline underline-offset-4"
+          >
+            View hours →
+          </Link>
+        </div>
+
+        {/* Call Us */}
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+          <h4 className="text-sm font-medium">Call Us</h4>
+          <p className="mt-1 text-sm text-gray-700">Tap to call the surgery.</p>
+          <a
+            href="tel:01235468860"
+            className="mt-2 inline-flex items-center text-sm font-semibold underline underline-offset-4"
+          >
+            01235 468860
+          </a>
+        </div>
+
+        {/* Find Us */}
+        <div className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+          <h4 className="text-sm font-medium">Find Us</h4>
+          <p className="mt-1 text-sm text-gray-700">View map and directions.</p>
+          <a
+            href="https://maps.google.com/?q=Malthouse+Surgery"
+            className="mt-2 inline-flex items-center text-sm font-semibold underline underline-offset-4"
+          >
+            Open in Maps →
+          </a>
+        </div>
+      </section>
+
+      {/* Jump to… */}
+      <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <h3 className="text-sm font-medium">Jump to…</h3>
+        <div className="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-2">
+          <a
+            href="https://www.malthousesurgery.co.uk/contact-us"
+            className="inline-flex items-center rounded-lg border border-gray-300 px-3 py-2 text-sm hover:bg-gray-50"
+          >
+            Contact the practice
+          </a>
+          <a
+            href="https://www.malthousesurgery.co.uk/practice-team"
+            className="inline-flex items-center rounded-lg border border-gray-300 px-3 py-2 text-sm hover:bg-gray-50"
+          >
+            Practice Team
+          </a>
+          <a
+            href="https://www.malthousesurgery.co.uk/register-with-us"
+            className="inline-flex items-center rounded-lg border border-gray-300 px-3 py-2 text-sm hover:bg-gray-50"
+          >
+            Register with our Practice
+          </a>
+          <a
+            href="https://www.malthousesurgery.co.uk/update-your-details"
+            className="inline-flex items-center rounded-lg border border-gray-300 px-3 py-2 text-sm hover:bg-gray-50"
+          >
+            Update your Details
+          </a>
+          <a
+            href="https://www.nhs.uk/"
+            className="inline-flex items-center rounded-lg border border-gray-300 px-3 py-2 text-sm hover:bg-gray-50"
+          >
+            Self-help & Resources
+          </a>
+        </div>
+      </section>
+
+      {/* NHS Resources */}
+      <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <a
+            href="https://111.nhs.uk/"
+            className="block rounded-lg border border-gray-300 px-4 py-3 text-sm hover:bg-gray-50"
+          >
+            <div className="font-medium">NHS 111</div>
+            <div className="mt-1 text-xs text-gray-600">Get medical help online or by phone.</div>
+          </a>
+
+          <a
+            href="https://www.nhs.uk/service-search/pharmacy/find-a-pharmacy"
+            className="block rounded-lg border border-gray-300 px-4 py-3 text-sm hover:bg-gray-50"
+          >
+            <div className="font-medium">Find a Pharmacy</div>
+            <div className="mt-1 text-xs text-gray-600">Locate nearby pharmacies and opening hours.</div>
+          </a>
+
+          <a
+            href="https://www.nhs.uk/conditions/"
+            className="block rounded-lg border border-gray-300 px-4 py-3 text-sm hover:bg-gray-50"
+          >
+            <div className="font-medium">Health A–Z</div>
+            <div className="mt-1 text-xs text-gray-600">Information about conditions, symptoms and treatments.</div>
+          </a>
+
+          <a
+            href="https://www.nhs.uk/live-well/"
+            className="block rounded-lg border border-gray-300 px-4 py-3 text-sm hover:bg-gray-50"
+          >
+            <div className="font-medium">Live Well</div>
+            <div className="mt-1 text-xs text-gray-600">Tips, advice and support for healthy living.</div>
+          </a>
+        </div>
+      </section>
+
+      {/* Accessibility & Inclusion */}
+      <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <h3 className="text-sm font-medium">Accessibility & Inclusion</h3>
+        <div className="mt-3 grid grid-cols-1 gap-3 sm:grid-cols-3">
+          <a
+            href="https://www.malthousesurgery.co.uk/language-services"
+            className="block rounded-lg border border-gray-300 px-4 py-3 text-sm hover:bg-gray-50"
+          >
+            <div className="font-medium">Language Services</div>
+            <div className="mt-1 text-xs text-gray-600">Interpreting and translation support.</div>
+          </a>
+
+          <a
+            href="https://www.malthousesurgery.co.uk/neurodiversity-passport"
+            className="block rounded-lg border border-gray-300 px-4 py-3 text-sm hover:bg-gray-50"
+          >
+            <div className="font-medium">Neurodiversity Passport</div>
+            <div className="mt-1 text-xs text-gray-600">Tell us how we can make our practice accessible for you.</div>
+          </a>
+
+          <a
+            href="https://www.malthousesurgery.co.uk/accessibility"
+            className="block rounded-lg border border-gray-300 px-4 py-3 text-sm hover:bg-gray-50"
+          >
+            <div className="font-medium">Accessibility Statement</div>
+            <div className="mt-1 text-xs text-gray-600">Read our accessibility commitment and support.</div>
+          </a>
+        </div>
+      </section>
+
+      {/* Latest news */}
+      <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <div className="flex items-center justify-between">
+          <h3 className="text-sm font-medium">Latest news</h3>
+          <a
+            href="https://www.malthousesurgery.co.uk/news"
+            className="text-sm font-semibold underline underline-offset-4"
+          >
+            View all
+          </a>
+        </div>
+
+        {/* Static list matching your snapshot; you can replace with live data later */}
+        <ul className="mt-3 space-y-2 text-sm">
+          <li className="flex items-baseline justify-between gap-4">
+            <a href="https://www.malthousesurgery.co.uk/news" className="hover:underline">
+              Flu and COVID Vaccinations – Autumn/Winter 2025
+            </a>
+            <span className="text-xs text-gray-500">26 Aug 2025</span>
+          </li>
+          <li className="flex items-baseline justify-between gap-4">
+            <a href="https://www.malthousesurgery.co.uk/news" className="hover:underline">
+              NHS Cervical Screening Programme
+            </a>
+            <span className="text-xs text-gray-500">26 Aug 2025</span>
+          </li>
+          <li className="flex items-baseline justify-between gap-4">
+            <a href="https://www.malthousesurgery.co.uk/news" className="hover:underline">
+              We’re Moving to Accurx Triage in September
+            </a>
+            <span className="text-xs text-gray-500">22 Aug 2025</span>
+          </li>
+          <li className="flex items-baseline justify-between gap-4">
+            <a href="https://www.malthousesurgery.co.uk/news" className="hover:underline">
+              📢 You and Your General Practice – New NHS Patient Guide
+            </a>
+            <span className="text-xs text-gray-500">20 Aug 2025</span>
+          </li>
+        </ul>
+      </section>
+
+      {/* App Rollout – Staff Feedback */}
+      <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <h3 className="text-sm font-medium">App Rollout – Staff Feedback</h3>
+        <p className="mt-1 text-sm text-gray-700">
+          We’d love to hear your ideas on how this app could be most useful for patients and staff. Please share your feedback below:
+        </p>
+        <a
+          href="https://forms.gle/"
+          className="mt-2 inline-flex items-center text-sm font-semibold underline underline-offset-4"
+        >
+          Open Feedback Form →
+        </a>
+      </section>
+
+      {/* Install hint */}
+      <section className="rounded-xl border border-gray-200 bg-white p-4 shadow-sm">
+        <h3 className="text-sm font-medium">Add this app to your home screen</h3>
+        <p className="mt-1 text-sm text-gray-700">
+          On iPhone/iPad: tap the share icon in Safari and choose <em>Add to Home Screen</em>. On Android/Chrome: open the menu (⋮) and choose <em>Install app</em>.
+        </p>
+        <p className="mt-3 text-xs text-gray-500">
+          © 2025 Malthouse Surgery. Links open the official site at malthousesurgery.co.uk.
+        </p>
+      </section>
     </div>
   );
 }
