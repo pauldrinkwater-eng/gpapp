@@ -22,7 +22,7 @@
   }
 }
 
-/* Base element styles (ok to keep plain CSS here) */
+/* Base element styles */
 html, body {
   height: 100%;
 }
@@ -39,3 +39,41 @@ body {
 .bg-nhs-blue { background-color: var(--nhs-blue); }
 .bg-nhs-tint { background-color: var(--nhs-tint); }
 .ring-nhs-tint { --tw-ring-color: var(--nhs-tint); }
+
+/* ---- Extras for News + Splash ---- */
+
+/* Line clamping (no plugin needed) */
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Visually hidden (a11y helper) */
+.visually-hidden {
+  position: absolute !important;
+  height: 1px; width: 1px;
+  overflow: hidden; clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap; border: 0; padding: 0; margin: -1px;
+}
+
+/* Splash animations (respect reduced motion) */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes splash-zoom {
+    0% { transform: scale(0.96); opacity: 0.9; }
+    60% { transform: scale(1.02); opacity: 1; }
+    100% { transform: scale(1); }
+  }
+  .animate-splash-zoom {
+    animation: splash-zoom 600ms ease-out both;
+  }
+
+  @keyframes splash-shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(300%); }
+  }
+  .animate-splash-shimmer {
+    animation: splash-shimmer 1.2s ease-in-out infinite;
+  }
+}
