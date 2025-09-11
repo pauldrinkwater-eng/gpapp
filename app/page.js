@@ -38,12 +38,12 @@ export default function HomePage() {
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Make a Request</h2>
         <div className="space-y-3">
           <RowCard
-            href="https://www.malthousesurgery.co.uk/appointments"
+            href="https://accurx.nhs.uk/patient-initiated/K84027/flow/medical-request"
             title="Make an Appointment"
             subtitle="Book or request a GP appointment online."
           />
           <RowCard
-            href="https://www.malthousesurgery.co.uk/prescriptions"
+            href="https://malthousesurgery.co.uk/order-your-repeat-prescription/"
             title="Prescription Request"
             subtitle="Order your repeat prescriptions online."
           />
