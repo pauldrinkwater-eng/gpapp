@@ -34,3 +34,23 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# 1) Take the remote ("theirs") versions to clear conflicts
+git checkout --theirs package.json
+git checkout --theirs package-lock.json
+
+# 2) Add your Capacitor deps back into package.json
+npm pkg set dependencies.@capacitor/core="^6.0.0"
+npm pkg set dependencies.@capacitor/push-notifications="^6.0.0"
+npm pkg set dependencies.@capacitor/app="^6.0.0"
+
+# 3) Recreate a clean lockfile
+rm -f package-lock.json
+npm install
+
+# 4) Stage and continue the rebase
+git add package.json package-lock.json
+git rebase --continue
+
+# 5) Push
+git push
+
