@@ -1,6 +1,7 @@
 // app/layout.js
 import "./globals.css";
 import Header from "../components/Header";
+import BottomNav from "../components/BottomNav";
 
 export const metadata = {
   title: "Malthouse Surgery",
@@ -10,11 +11,12 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="bg-white text-[#005EB8] antialiased">
+      <body className="nhs-bg text-nhs-blue antialiased">
         <Header />
-        <main className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-6">
+        <main className="mx-auto max-w-lg px-4 pb-24 pt-4">
           {children}
         </main>
+        <BottomNav />
       </body>
     </html>
   );
