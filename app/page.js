@@ -1,16 +1,21 @@
-"use client";
-
+// app/page.js (server component)
 import Link from "next/link";
+import { getNews } from "../lib/getNews";
+import NewsCarousel from "../components/NewsCarousel";
+
+export const revalidate = 1800; // cache page for 30 minutes
 
 // Card row component
 function RowCard({ href, title, subtitle }) {
-  const Cmp = href?.startsWith("http") || href?.startsWith("tel:") ? "a" : Link;
-  const props = Cmp === "a" ? { href } : { href };
+  const isExternal = href?.startsWith("http") || href?.startsWith("tel:");
+  const Cmp = isExternal ? "a" : Link;
+  const props = { href };
 
   return (
     <Cmp
       {...props}
       className="block rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm hover:shadow transition-shadow"
+      {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
     >
       <div className="text-[15px] font-semibold text-[#0b5fad]">{title}</div>
       {subtitle && <div className="mt-1 text-[13px] text-gray-600">{subtitle}</div>}
@@ -18,7 +23,9 @@ function RowCard({ href, title, subtitle }) {
   );
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  const items = await getNews(5); // latest 5 posts from your site feed
+
   return (
     <div className="space-y-8">
       {/* Welcome panel */}
@@ -48,7 +55,7 @@ export default function HomePage() {
             subtitle="Order your repeat prescriptions online."
           />
           <RowCard
-            href="https://https://accurx.nhs.uk/patient-initiated/K84027/flow/fit-note"
+            href="https://accurx.nhs.uk/patient-initiated/K84027/flow/fit-note"
             title="Fit Note"
             subtitle="Request or renew a fit note online."
           />
@@ -68,6 +75,8 @@ export default function HomePage() {
         </p>
         <a
           href="https://www.malthousesurgery.co.uk/news"
+          target="_blank"
+          rel="noreferrer"
           className="mt-2 inline-flex items-center text-sm font-semibold underline underline-offset-4"
         >
           Learn more →
@@ -119,29 +128,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* NHS Resources */}
-      <section>
-        <h2 className="mb-3 text-xl font-semibold text-gray-900">NHS Resources</h2>
-        <div className="space-y-3">
-          <RowCard href="https://111.nhs.uk/" title="NHS 111" subtitle="Get medical help online or by phone." />
-          <RowCard
-            href="https://www.nhs.uk/service-search/pharmacy/find-a-pharmacy"
-            title="Find a Pharmacy"
-            subtitle="Locate nearby pharmacies and opening hours."
-          />
-          <RowCard
-            href="https://www.nhs.uk/conditions/"
-            title="Health A–Z"
-            subtitle="Information about conditions, symptoms and treatments."
-          />
-          <RowCard
-            href="https://www.nhs.uk/live-well/"
-            title="Live Well"
-            subtitle="Tips, advice and support for healthy living."
-          />
-        </div>
-      </section>
-
       {/* Accessibility & Inclusion */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Accessibility & Inclusion</h2>
@@ -164,37 +150,12 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Latest news */}
+      {/* Latest news — live feed with slide + swipe */}
       <section>
-        <h2 className="mb-3 text-xl font-semibold text-gray-900">Latest news</h2>
-        <div className="space-y-3">
-          <RowCard
-            href="https://www.malthousesurgery.co.uk/news"
-            title="Flu and COVID Vaccinations – Autumn/Winter 2025"
-            subtitle="26 Aug 2025"
-          />
-          <RowCard
-            href="https://www.malthousesurgery.co.uk/news"
-            title="NHS Cervical Screening Programme"
-            subtitle="26 Aug 2025"
-          />
-          <RowCard
-            href="https://www.malthousesurgery.co.uk/news"
-            title="We’re Moving to Accurx Triage in September"
-            subtitle="22 Aug 2025"
-          />
-          <RowCard
-            href="https://www.malthousesurgery.co.uk/news"
-            title="📢 You and Your General Practice – New NHS Patient Guide"
-            subtitle="20 Aug 2025"
-          />
-        </div>
-        <a
-          href="https://www.malthousesurgery.co.uk/news"
-          className="mt-2 inline-block text-sm font-semibold underline underline-offset-4"
-        >
-          View all →
-        </a>
+        <NewsCarousel
+          items={items}
+          websiteNewsUrl="https://www.malthousesurgery.co.uk/news/"
+        />
       </section>
 
       {/* Feedback */}
@@ -206,6 +167,8 @@ export default function HomePage() {
         </p>
         <a
           href="https://forms.cloud.microsoft/e/i7END6yxWM"
+          target="_blank"
+          rel="noreferrer"
           className="mt-2 inline-block text-sm font-semibold underline underline-offset-4"
         >
           Open Feedback Form →
