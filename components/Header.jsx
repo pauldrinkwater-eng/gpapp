@@ -9,7 +9,7 @@ export default function Header() {
   const isHome = pathname === "/";
 
   return (
-    <header className="bg-[#005EB8] px-4 py-3 text-white">
+    <header className="bg-white px-4 py-3 border-b border-gray-200">
       <div className="mx-auto flex max-w-3xl items-center justify-between">
         {/* Left: Back button if not home, otherwise logo */}
         {isHome ? (
@@ -23,7 +23,7 @@ export default function Header() {
         ) : (
           <button
             onClick={() => router.back()}
-            className="text-sm underline underline-offset-4 hover:text-gray-200"
+            className="text-sm underline underline-offset-4 text-gray-700 hover:text-gray-900"
           >
             ← Back
           </button>
@@ -31,8 +31,10 @@ export default function Header() {
 
         {/* Center: Title + tagline */}
         <div className="flex flex-col items-center text-center flex-1">
-          <span className="font-bold text-lg">Malthouse Surgery</span>
-          <span className="text-sm text-gray-200">
+          <span className="font-bold text-lg text-gray-900">
+            Malthouse Surgery
+          </span>
+          <span className="text-sm text-gray-500">
             Your health, made simpler.
           </span>
         </div>
