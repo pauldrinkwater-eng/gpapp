@@ -1,45 +1,29 @@
 // components/Header.jsx
 "use client";
 
-const LINKS = {
-  mainSite: "https://www.malthousesurgery.co.uk/",
-  news: "https://www.malthousesurgery.co.uk/news/",
-};
-
 export default function Header() {
   return (
-    <header className="w-full border-b border-slate-200 bg-[#005EB8]">
-      <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 h-14 flex items-center justify-between">
-        {/* Brand */}
-        <div className="flex items-center gap-3">
-          <div className="h-8 w-8 rounded-lg bg-white/90 flex items-center justify-center font-bold text-[#005EB8]">
-            M
+    <header className="sticky top-0 z-50 bg-nhs-blue text-white">
+      <div className="mx-auto max-w-lg px-4 h-12 flex items-center justify-between">
+        {/* NHS mark */}
+        <div className="flex items-center gap-2">
+          <div className="bg-white rounded-[3px] px-1.5 py-0.5">
+            <span className="block text-[14px] font-extrabold leading-none text-nhs-blue tracking-[0.02em]">
+              NHS
+            </span>
           </div>
-          <div className="text-white">
-            <div className="font-semibold leading-tight">Malthouse Surgery</div>
-            <div className="text-xs opacity-90">Your health, made simpler.</div>
-          </div>
+          <span className="text-sm/none opacity-90">Malthouse Surgery</span>
         </div>
 
-        {/* Right links */}
-        <nav className="flex items-center gap-6 text-white">
-          <a
-            href={LINKS.mainSite}
-            className="text-sm hover:underline"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Main Site
-          </a>
-          <a
-            href={LINKS.news}
-            className="text-sm hover:underline"
-            target="_blank"
-            rel="noreferrer"
-          >
-            News
-          </a>
-        </nav>
+        {/* Right action (optional) */}
+        <a
+          href="https://www.malthousesurgery.co.uk/"
+          target="_blank"
+          rel="noreferrer"
+          className="text-sm underline decoration-white/40 hover:decoration-white"
+        >
+          Main site
+        </a>
       </div>
     </header>
   );
