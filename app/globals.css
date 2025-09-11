@@ -24,3 +24,15 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+/* NHS colour tokens */
+:root{
+  --nhs-blue:#005EB8;      /* NHS Blue */
+  --nhs-blue-dark:#003087; /* Dark NHS Blue */
+  --nhs-tint:#E6F0FA;      /* very light blue background */
+}
+
+.nhs-bg { background-color:#fff; }           /* overall white */
+.text-nhs-blue { color: var(--nhs-blue); }
+.bg-nhs-blue { background-color: var(--nhs-blue); }
+.bg-nhs-tint { background-color: var(--nhs-tint); }
+.ring-nhs-tint { --tw-ring-color: var(--nhs-tint); }
