@@ -5,17 +5,15 @@ import BottomNav from "../components/BottomNav";
 
 export const metadata = {
   title: "Malthouse Surgery",
-  description: "Your health, made simpler.",
+  description: "Patient app",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="nhs-bg text-nhs-blue antialiased">
+      <body className="min-h-screen bg-white pb-16"> {/* pb for BottomNav */}
         <Header />
-        <main className="mx-auto max-w-lg px-4 pb-24 pt-4">
-          {children}
-        </main>
+        <main className="mx-auto max-w-3xl p-4">{children}</main>
         <BottomNav />
       </body>
     </html>
