@@ -1,8 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import React from "react";
 
-function Row({ label, value }) {
+type RowProps = {
+  label: string;
+  value: string;
+};
+
+function Row({ label, value }: RowProps) {
   return (
     <div className="flex justify-between border-b border-gray-200 py-2 text-sm">
       <span className="font-medium text-gray-700">{label}</span>
@@ -33,11 +39,9 @@ export default function OpeningHoursPage() {
         </p>
       </section>
 
-      {/* Hours table as card */}
+      {/* Hours card */}
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-        <h2 className="mb-3 text-base font-semibold text-nhs-blue">
-          Regular Hours
-        </h2>
+        <h2 className="mb-3 text-base font-semibold text-nhs-blue">Regular Hours</h2>
         <div>
           <Row label="Monday" value="08:00 – 18:30" />
           <Row label="Tuesday" value="08:00 – 18:30" />
@@ -49,22 +53,18 @@ export default function OpeningHoursPage() {
         </div>
       </section>
 
-      {/* Extended hours card */}
+      {/* Extended hours */}
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-        <h2 className="mb-2 text-base font-semibold text-nhs-blue">
-          Extended Hours
-        </h2>
+        <h2 className="mb-2 text-base font-semibold text-nhs-blue">Extended Hours</h2>
         <p className="text-sm text-gray-700">
           We also offer extended hours appointments on some evenings and
           weekends. Please contact reception for availability.
         </p>
       </section>
 
-      {/* Bank holidays card */}
+      {/* Bank holidays */}
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-        <h2 className="mb-2 text-base font-semibold text-nhs-blue">
-          Bank Holidays
-        </h2>
+        <h2 className="mb-2 text-base font-semibold text-nhs-blue">Bank Holidays</h2>
         <p className="text-sm text-gray-700">
           The surgery is closed on all UK Bank Holidays. Please call NHS 111
           when we are closed.
