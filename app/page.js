@@ -48,7 +48,7 @@ export default function HomePage() {
             subtitle="Order your repeat prescriptions online."
           />
           <RowCard
-            href="https://www.malthousesurgery.co.uk/fit-note"
+            href="https://https://accurx.nhs.uk/patient-initiated/K84027/flow/fit-note"
             title="Fit Note"
             subtitle="Request or renew a fit note online."
           />
