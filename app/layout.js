@@ -1,7 +1,6 @@
 // app/layout.js
 import "./globals.css";
 import Header from "../components/Header";
-import BottomNav from "../components/BottomNav";
 
 export const metadata = {
   title: "Malthouse Surgery",
@@ -16,7 +15,7 @@ export const metadata = {
   // iOS: open as standalone (no Safari UI) and control status bar
   appleWebApp: {
     capable: true,
-    title: "Malthouse",
+    title: "Malthouse Surgery",
     statusBarStyle: "default"        // or "black" / "black-translucent"
   }
 };
@@ -24,11 +23,9 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white pb-16">
-        {/* pb for BottomNav */}
+      <body className="min-h-screen bg-white">
         <Header />
         <main className="mx-auto max-w-3xl p-4">{children}</main>
-        <BottomNav />
       </body>
     </html>
   );
