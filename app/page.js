@@ -205,7 +205,7 @@ export default function HomePage() {
           feedback below:
         </p>
         <a
-          href="https://forms.gle/"
+          href="https://forms.cloud.microsoft/e/i7END6yxWM"
           className="mt-2 inline-block text-sm font-semibold underline underline-offset-4"
         >
           Open Feedback Form →
