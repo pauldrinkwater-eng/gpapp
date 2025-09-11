@@ -6,12 +6,26 @@ import BottomNav from "../components/BottomNav";
 export const metadata = {
   title: "Malthouse Surgery",
   description: "Patient app",
+  // PWA bits
+  themeColor: "#005EB8",
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/icons/192x192.png",      // favicon / install icon (Chrome)
+    apple: "/icons/192x192.png"      // iOS home screen icon
+  },
+  // iOS: open as standalone (no Safari UI) and control status bar
+  appleWebApp: {
+    capable: true,
+    title: "Malthouse",
+    statusBarStyle: "default"        // or "black" / "black-translucent"
+  }
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="min-h-screen bg-white pb-16"> {/* pb for BottomNav */}
+      <body className="min-h-screen bg-white pb-16">
+        {/* pb for BottomNav */}
         <Header />
         <main className="mx-auto max-w-3xl p-4">{children}</main>
         <BottomNav />
@@ -19,8 +33,3 @@ export default function RootLayout({ children }) {
     </html>
   );
 }
-<head>
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#005EB8" />
-  <link rel="apple-touch-icon" href="/icons/192x192.png" />
-</head>
