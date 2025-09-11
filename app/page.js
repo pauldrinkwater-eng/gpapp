@@ -1,11 +1,8 @@
 // app/page.js (server component)
 import Link from "next/link";
-import dynamic from "next/dynamic";
 import { getNews } from "../lib/getNews";
 import NewsCarousel from "../components/NewsCarousel";
-
-// Client-only splash (renders once per device)
-const Splash = dynamic(() => import("../components/Splash"), { ssr: false });
+import ClientSplash from "../components/ClientSplash"; // client-only splash bridge
 
 export const revalidate = 1800; // cache page for 30 minutes
 
@@ -33,7 +30,7 @@ export default async function HomePage() {
   return (
     <div className="space-y-8">
       {/* Splash overlay (first visit only) */}
-      <Splash />
+      <ClientSplash />
 
       {/* Welcome panel */}
       <section className="rounded-2xl bg-green-50 p-5 shadow-sm ring-1 ring-green-100">
