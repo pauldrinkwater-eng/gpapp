@@ -28,7 +28,8 @@ export default function ClientSplash() {
         {/* Welcome text */}
         <div className="text-white font-bold tracking-tight">
           <p className="text-xl md:text-2xl">Welcome to the</p>
-          <p className="text-2xl md:text-3xl">Malthouse Surgery App</p>
+          <p className="text-2xl md:text-3xl">Malthouse Surgery</p>
+          <p classname="text-xl md:text-2x1"<App</p>
         </div>
       </div>
     </div>
