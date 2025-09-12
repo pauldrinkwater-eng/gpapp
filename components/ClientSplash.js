@@ -1,11 +1,9 @@
 // components/ClientSplash.js
 "use client";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 
 export default function ClientSplash() {
   const [show, setShow] = useState(true);
-  const [logoSrc, setLogoSrc] = useState("/icons/icon-512x512.png");
 
   useEffect(() => {
     const timer = setTimeout(() => setShow(false), 2000); // hides after 2s
@@ -15,24 +13,23 @@ export default function ClientSplash() {
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-gradient-to-br from-[#33C79F] to-[#6AD97E]">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
       <div className="flex flex-col items-center text-center space-y-6">
-        {/* Logo with fallback */}
-        <Image
-          src={logoSrc}
+        {/* Google cover photo logo */}
+        <img
+          src="/icons/google-cover-photo.png"
           alt="Malthouse Surgery Logo"
-          width={160}
-          height={160}
-          priority
+          width={280}
+          height={280}
           className="animate-mh-fade-in"
-          onError={() => setLogoSrc("/icons/192x192.png")}
+          loading="eager"
+          decoding="async"
         />
 
-        {/* Welcome text */}
-        <div className="text-white font-bold tracking-tight animate-mh-fade-in anim-delay-150 drop-shadow-lg">
+        {/* Optional welcome text (remove if logo already has text) */}
+        <div className="font-bold tracking-tight text-gray-800 animate-mh-fade-in anim-delay-150">
           <p className="text-xl md:text-2xl">Welcome to the</p>
-          <p className="text-2xl md:text-3xl">Malthouse Surgery</p>
-          <p className="text-xl md:text-2xl">App</p>
+          <p className="text-2xl md:text-3xl">Malthouse Surgery App</p>
         </div>
       </div>
     </div>
