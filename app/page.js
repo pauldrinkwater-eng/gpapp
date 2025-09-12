@@ -91,7 +91,7 @@ export default async function HomePage() {
           Flu and COVID vaccination clinics are now available to book.
         </p>
         <a
-          href="https://www.malthousesurgery.co.uk/news"
+          href="https://malthousesurgery.co.uk/flu-covid-vaccinations-autumn-winter-2025/"
           target="_blank"
           rel="noreferrer"
           className="mt-4 inline-flex items-center gap-2 rounded-xl border border-blue-200 bg-white px-4 py-2 text-[14px] font-medium text-[#0b5fad] hover:shadow-sm"
@@ -141,10 +141,10 @@ export default async function HomePage() {
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Jump to…</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <RowCard compact href="https://www.malthousesurgery.co.uk/contact-us" title="Contact the practice" />
-          <RowCard compact href="https://www.malthousesurgery.co.uk/practice-team" title="Practice Team" />
-          <RowCard compact href="https://www.malthousesurgery.co.uk/register-with-us" title="Register with our Practice" />
-          <RowCard compact href="https://www.malthousesurgery.co.uk/update-your-details" title="Update your Details" />
+          <RowCard compact href="https://malthousesurgery.co.uk/contact-the-practice/" title="Contact the practice" />
+          <RowCard compact href="https://malthousesurgery.co.uk/practice-team/" title="Practice Team" />
+          <RowCard compact href="https://malthousesurgery.co.uk/register-with-our-practice/" title="Register with our Practice" />
+          <RowCard compact href="https://malthousesurgery.co.uk/update-your-details/" title="Update your Details" />
         </div>
       </section>
 
@@ -180,17 +180,12 @@ export default async function HomePage() {
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Accessibility & Inclusion</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <RowCard
-            href="https://www.malthousesurgery.co.uk/language-services"
-            title="Language Services"
-            subtitle="Interpreting and translation support."
-          />
-          <RowCard
-            href="https://www.malthousesurgery.co.uk/neurodiversity-passport"
+            href="https://malthousesurgery.co.uk/neurodiversity-strategy/"
             title="Neurodiversity Passport"
             subtitle="Tell us how we can make our practice accessible for you."
           />
           <RowCard
-            href="https://www.malthousesurgery.co.uk/accessibility"
+            href="https://malthousesurgery.co.uk/accessibility-statement/"
             title="Accessibility Statement"
             subtitle="Read our accessibility commitment and support."
           />
