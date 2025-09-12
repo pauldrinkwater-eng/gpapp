@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "next/link";
-
 function Row({ label, value }) {
   return (
     <div className="flex justify-between border-b border-gray-200 py-2 text-sm">
@@ -14,14 +12,6 @@ function Row({ label, value }) {
 export default function OpeningHoursPage() {
   return (
     <div className="space-y-6">
-      {/* Back link (same link styling as home cards) */}
-      <Link
-        href="/"
-        className="inline-block text-sm font-semibold underline underline-offset-4 text-[#0b5fad]"
-      >
-        ← Back to home
-      </Link>
-
       {/* Green intro panel (matches home) */}
       <section className="rounded-2xl bg-green-50 p-5 shadow-sm ring-1 ring-green-100">
         <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
