@@ -6,7 +6,7 @@ import ClientSplash from "../components/ClientSplash"; // client-only splash bri
 
 export const revalidate = 1800; // cache page for 30 minutes
 
-// Card row component
+// Large row card (scaled up)
 function RowCard({ href, title, subtitle }) {
   const isExternal = href?.startsWith("http") || href?.startsWith("tel:");
   const Cmp = isExternal ? "a" : Link;
@@ -15,12 +15,22 @@ function RowCard({ href, title, subtitle }) {
   return (
     <Cmp
       {...props}
-      className="block rounded-2xl border border-gray-200 bg-white px-4 py-3 shadow-sm hover:shadow transition-shadow"
+      className="block rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm transition-shadow hover:shadow"
       {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
     >
-      <div className="text-[15px] font-semibold text-[#0b5fad]">{title}</div>
-      {subtitle && <div className="mt-1 text-[13px] text-gray-600">{subtitle}</div>}
+      <div className="text-[16px] font-semibold text-[#0b5fad]">{title}</div>
+      {subtitle && <div className="mt-1 text-[14px] text-gray-600">{subtitle}</div>}
     </Cmp>
+  );
+}
+
+// Info tiles (Opening / Call / Find) to match the first app layout
+function InfoTile({ title, children }) {
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+      <div className="text-[16px] font-semibold">{title}</div>
+      <div className="mt-1 text-[14px] text-gray-600">{children}</div>
+    </div>
   );
 }
 
@@ -32,22 +42,21 @@ export default async function HomePage() {
       {/* Splash overlay (first visit only) */}
       <ClientSplash />
 
-      {/* Welcome panel */}
-      <section className="rounded-2xl bg-green-50 p-5 shadow-sm ring-1 ring-green-100">
-        <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
+      {/* Welcome panel – scaled to match original */}
+      <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
+        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
           Welcome to Malthouse Surgery
         </h1>
         <p className="mt-2 text-[15px] leading-6 text-gray-700">
-          Use this app to quickly access appointments, prescriptions, opening,
-          and the latest updates. Everything links straight into our main
-          website so you always get the most up-to-date information.
+          Use this app to quickly access appointments, prescriptions, opening, and the latest updates.
+          Everything links straight into our main website so you always get the most up-to-date information.
         </p>
       </section>
 
       {/* Make a Request */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Make a Request</h2>
-        <div className="space-y-3">
+        <div className="space-y-4">
           <RowCard
             href="https://accurx.nhs.uk/patient-initiated/K84027/flow/medical-request"
             title="Make an Appointment"
@@ -71,47 +80,63 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Flu clinics banner */}
-      <section className="rounded-2xl bg-nhs-tint p-5 shadow-sm ring-1 ring-blue-100">
-        <h3 className="text-base font-semibold text-nhs-blue">Flu Vaccination Clinics</h3>
-        <p className="mt-1 text-sm text-gray-700">
+      {/* Flu clinics banner – larger like v1 */}
+      <section className="rounded-2xl bg-blue-50 px-6 py-6 shadow-sm ring-1 ring-blue-100">
+        <h3 className="text-[18px] font-semibold text-gray-900">Flu Vaccination Clinics</h3>
+        <p className="mt-2 text-[14px] text-gray-700">
           Flu and COVID vaccination clinics are now available to book.
         </p>
         <a
           href="https://www.malthousesurgery.co.uk/news"
           target="_blank"
           rel="noreferrer"
-          className="mt-2 inline-flex items-center text-sm font-semibold underline underline-offset-4"
+          className="mt-4 inline-flex items-center gap-2 rounded-xl border border-blue-200 bg-white px-4 py-2 text-[14px] font-medium text-[#0b5fad] hover:shadow-sm"
         >
           Learn more →
         </a>
       </section>
 
-      {/* Opening, Call, Find */}
+      {/* Opening, Call, Find – three big tiles (grid) */}
       <section>
-        <div className="space-y-3">
-          <RowCard
-            href="/opening-hours"
-            title="Opening Hours"
-            subtitle="See today’s hours and holiday closures."
-          />
-          <RowCard
-            href="tel:01235468860"
-            title="Call Us"
-            subtitle="Tap to call the surgery. 01235 468860"
-          />
-          <RowCard
-            href="https://maps.google.com/?q=Malthouse+Surgery"
-            title="Find Us"
-            subtitle="View map and directions."
-          />
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <InfoTile title="Opening Hours">
+            See today’s hours and holiday closures.
+            <div>
+              <Link href="/opening-hours" className="mt-2 inline-block text-[14px] font-medium text-[#0b5fad]">
+                View hours
+              </Link>
+            </div>
+          </InfoTile>
+
+          <InfoTile title="Call Us">
+            Tap to call the surgery.
+            <div>
+              <a href="tel:01235468860" className="mt-2 inline-block text-[14px] font-medium text-[#0b5fad]">
+                01235 468860
+              </a>
+            </div>
+          </InfoTile>
+
+          <InfoTile title="Find Us">
+            View map and directions.
+            <div>
+              <a
+                href="https://maps.google.com/?q=Malthouse+Surgery"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-2 inline-block text-[14px] font-medium text-[#0b5fad]"
+              >
+                Open in Maps
+              </a>
+            </div>
+          </InfoTile>
         </div>
       </section>
 
       {/* Jump to… */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Jump to…</h2>
-        <div className="space-y-3">
+        <div className="space-y-4">
           <RowCard href="https://www.malthousesurgery.co.uk/contact-us" title="Contact the practice" />
           <RowCard href="https://www.malthousesurgery.co.uk/practice-team" title="Practice Team" />
           <RowCard href="https://www.malthousesurgery.co.uk/register-with-us" title="Register with our Practice" />
@@ -123,7 +148,7 @@ export default async function HomePage() {
       {/* Accessibility & Inclusion */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Accessibility & Inclusion</h2>
-        <div className="space-y-3">
+        <div className="space-y-4">
           <RowCard
             href="https://www.malthousesurgery.co.uk/language-services"
             title="Language Services"
@@ -144,35 +169,31 @@ export default async function HomePage() {
 
       {/* Latest news — live feed with slide + swipe */}
       <section>
-        <NewsCarousel
-          items={items}
-          websiteNewsUrl="https://www.malthousesurgery.co.uk/news/"
-        />
+        <NewsCarousel items={items} websiteNewsUrl="https://www.malthousesurgery.co.uk/news/" />
       </section>
 
       {/* Feedback */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">App Rollout – Staff Feedback</h2>
-        <p className="text-sm text-gray-700">
-          We’d love to hear your ideas on how this app could be most useful for patients and staff. Please share your
-          feedback below:
+        <p className="text-[14px] text-gray-700">
+          We’d love to hear your ideas on how this app could be most useful for patients and staff.
         </p>
         <a
           href="https://forms.cloud.microsoft/e/i7END6yxWM"
           target="_blank"
           rel="noreferrer"
-          className="mt-2 inline-block text-sm font-semibold underline underline-offset-4"
+          className="mt-2 inline-block text-[14px] font-semibold underline underline-offset-4"
         >
           Open Feedback Form →
         </a>
       </section>
 
       {/* Install instructions */}
-      <section className="rounded-2xl border border-gray-200 bg-white p-4 shadow-sm">
-        <h2 className="text-sm font-medium">Add this app to your home screen</h2>
-        <p className="mt-1 text-sm text-gray-700">
-          On iPhone/iPad: tap the share icon in Safari and choose <em>Add to Home Screen</em>. On Android/Chrome: open
-          the menu (⋮) and choose <em>Install app</em>.
+      <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+        <h2 className="text-[15px] font-semibold">Add this app to your home screen</h2>
+        <p className="mt-1 text-[14px] text-gray-700">
+          On iPhone/iPad: tap the share icon in Safari and choose <em>Add to Home Screen</em>. On Android/Chrome:
+          open the menu (⋮) and choose <em>Install app</em>.
         </p>
         <p className="mt-3 text-xs text-gray-500">
           © 2025 Malthouse Surgery. Links open the official site at malthousesurgery.co.uk.
