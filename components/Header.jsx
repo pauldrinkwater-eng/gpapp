@@ -9,13 +9,13 @@ export default function Header() {
   const isHome = pathname === "/";
 
   return (
-    <header className="bg-white px-4 py-6 border-b border-gray-200">
+    <header className="bg-white border-b border-gray-200">
       <div className="mx-auto flex max-w-5xl items-center">
         {/* Back button (only if not home) */}
         {!isHome && (
           <button
             onClick={() => router.back()}
-            className="mr-4 text-sm text-gray-600 hover:text-gray-900"
+            className="ml-2 mr-4 text-sm text-gray-600 hover:text-gray-900"
           >
             ← Back
           </button>
