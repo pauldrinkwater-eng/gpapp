@@ -16,7 +16,7 @@ export default function ClientSplash() {
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
       {/* Google cover photo logo */}
       <img
-        src="/icons/google-cover-photo.png"
+        src="/icons/Google-Cover-Photo.png"
         alt="Malthouse Surgery Logo"
         width={1024}
         height={575}
