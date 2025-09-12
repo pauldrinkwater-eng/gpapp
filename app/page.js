@@ -28,7 +28,7 @@ export default async function HomePage() {
   const items = await getNews(5); // latest 5 posts from your site feed
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-page-fade">
       {/* Splash overlay (first visit only) */}
       <ClientSplash />
 
