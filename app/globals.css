@@ -116,3 +116,25 @@ body {
   }
   .animate-page-fade { animation: page-fade 300ms ease-out both; }
 }
+/* Fade-in utilities */
+@keyframes mh-fade-in {
+  from { opacity: 0; transform: translateY(8px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.animate-mh-fade-in {
+  animation: mh-fade-in 700ms ease-out both;
+}
+
+/* Optional stagger helpers */
+.anim-delay-150 { animation-delay: 150ms; }
+.anim-delay-300 { animation-delay: 300ms; }
+
+/* Respect users who prefer less motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-mh-fade-in,
+  .anim-delay-150,
+  .anim-delay-300 {
+    animation: none !important;
+  }
+}
