@@ -26,7 +26,7 @@ export default function Header() {
           <img
             src="/icons/Google-Cover-Photo.png"
             alt="Malthouse Surgery Cover"
-            className="h-12 object-contain"
+            className="h-16 object-contain"
           />
         </Link>
       </div>
