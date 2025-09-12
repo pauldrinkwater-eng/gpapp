@@ -1,29 +1,34 @@
+// components/ClientSplash.js
 "use client";
-import { useEffect, useState } from "react";
+import Image from "next/image";
+import { useState, useEffect } from "react";
 
-export default function Splash() {
+export default function ClientSplash() {
   const [show, setShow] = useState(true);
-  const [fade, setFade] = useState(false);
 
   useEffect(() => {
-    // Always show on load
-    const t = setTimeout(() => {
-      setFade(true);
-      setTimeout(() => setShow(false), 500); // fade-out duration
-    }, 1300); // visible duration before fade
-    return () => clearTimeout(t);
+    const timer = setTimeout(() => setShow(false), 2000); // hides after 2s
+    return () => clearTimeout(timer);
   }, []);
 
   if (!show) return null;
 
   return (
-    <div
-      className={`fixed inset-0 z-[1000] flex items-center justify-center bg-white
-                  transition-opacity duration-500 ${fade ? "opacity-0" : "opacity-100"}`}
-    >
-      <div className="text-center">
-        <div className="text-2xl font-semibold text-[#0b5fad]">Malthouse Surgery</div>
-        <div className="mt-2 text-sm text-gray-600">Loading…</div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#005eb8]">
+      <div className="flex flex-col items-center text-center space-y-6">
+        {/* Logo */}
+        <Image
+          src="/logo.png" // replace with your logo file in /public
+          alt="Malthouse Surgery Logo"
+          width={120}
+          height={120}
+          className="rounded-md"
+        />
+
+        {/* Welcome text */}
+        <h1 className="text-white text-2xl md:text-3xl font-bold tracking-tight">
+          Welcome to the Malthouse Surgery App
+        </h1>
       </div>
     </div>
   );
