@@ -17,10 +17,10 @@ export default function ClientSplash() {
       <div className="flex flex-col items-center text-center space-y-6">
         {/* Google cover photo logo */}
         <img
-          src="/icons/google-cover-photo.png"
+          src="/icons/Google-Cover-Photo.png"
           alt="Malthouse Surgery Logo"
-          width={280}
-          height={280}
+          width={1024}
+          height={575}
           className="animate-mh-fade-in"
           loading="eager"
           decoding="async"
