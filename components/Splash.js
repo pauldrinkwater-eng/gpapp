@@ -2,47 +2,46 @@
 
 import { useEffect, useState } from "react";
 
-// bump key to re-show once for everyone after this change
-const KEY = "mh_splash_seen_v3";
+// bump the key so it shows once for everyone after this change
+const KEY = "mh_splash_seen_v4";
 
-export default function Splash({ timeoutMs = 1800 }) {
+export default function Splash({ timeoutMs = 2000 }) {
   const [show, setShow] = useState(false);
-  const [enter, setEnter] = useState(false); // logo pop-in
-  const [exit, setExit] = useState(false);   // overlay fade-out
+  const [enter, setEnter] = useState(false); // start logo pop
+  const [exit, setExit] = useState(false);   // overlay fade out
 
   useEffect(() => {
+    const force = typeof window !== "undefined" && new URLSearchParams(location.search).get("splash") === "1";
+
     try {
-      const seen = localStorage.getItem(KEY);
+      const seen = !force && localStorage.getItem(KEY);
       if (!seen) {
-        setShow(true);
-        // enter animation next frame
-        const af = requestAnimationFrame(() => setEnter(true));
-        // start exit a bit before we remove it (for smooth fade)
-        const startExit = setTimeout(() => setExit(true), Math.max(0, timeoutMs - 300));
-        // remove and store flag after timeout
-        const done = setTimeout(() => {
+        setShow(true);                        // mount overlay
+        const af = requestAnimationFrame(() => setEnter(true));           // start logo pop
+        const t1 = setTimeout(() => setExit(true), Math.max(0, timeoutMs - 300)); // start fade out
+        const t2 = setTimeout(() => {
           setShow(false);
-          localStorage.setItem(KEY, "1");
+          if (!force) localStorage.setItem(KEY, "1");
         }, timeoutMs);
-        return () => {
-          cancelAnimationFrame(af);
-          clearTimeout(startExit);
-          clearTimeout(done);
-        };
+        return () => { cancelAnimationFrame(af); clearTimeout(t1); clearTimeout(t2); };
       }
     } catch {
-      // if localStorage not available, still show once
+      // fallback: still show once without storage
       setShow(true);
       const af = requestAnimationFrame(() => setEnter(true));
-      const startExit = setTimeout(() => setExit(true), Math.max(0, timeoutMs - 300));
-      const done = setTimeout(() => setShow(false), timeoutMs);
-      return () => {
-        cancelAnimationFrame(af);
-        clearTimeout(startExit);
-        clearTimeout(done);
-      };
+      const t1 = setTimeout(() => setExit(true), Math.max(0, timeoutMs - 300));
+      const t2 = setTimeout(() => setShow(false), timeoutMs);
+      return () => { cancelAnimationFrame(af); clearTimeout(t1); clearTimeout(t2); };
     }
   }, [timeoutMs]);
+
+  const closeNow = () => {
+    setExit(true);
+    setTimeout(() => {
+      setShow(false);
+      try { localStorage.setItem(KEY, "1"); } catch {}
+    }, 300);
+  };
 
   if (!show) return null;
 
@@ -55,33 +54,21 @@ export default function Splash({ timeoutMs = 1800 }) {
                   ${exit ? "opacity-0" : "opacity-100"}`}
     >
       <div className="flex flex-col items-center gap-4">
-        {/* Logo pop/fade in */}
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/icons/192x192.png"
           alt="Malthouse Surgery"
-          className={`h-20 w-20 rounded-md
-                      motion-safe:${enter ? "animate-logo-pop" : ""}`}
+          className={`h-20 w-20 rounded-md ${enter ? "animate-logo-pop" : ""}`}
         />
 
-        {/* Optional name under logo (white) — remove if you want logo only */}
-        {/* <div className="text-white/95 text-lg font-semibold">Malthouse Surgery</div> */}
-
-        {/* Progress shimmer */}
+        {/* progress shimmer */}
         <div className="w-56 h-2 overflow-hidden rounded-full bg-white/25">
-          <div className="h-full w-1/3 bg-white/90 motion-safe:animate-splash-shimmer" />
+          <div className="h-full w-1/3 bg-white/90 animate-splash-shimmer" />
         </div>
 
-        {/* Skip button */}
         <button
-          onClick={() => {
-            setExit(true);
-            setTimeout(() => {
-              setShow(false);
-              try { localStorage.setItem(KEY, "1"); } catch {}
-            }, 300);
-          }}
-          className="mt-2 text-sm text-white/80 underline underline-offset-4 hover:text-white"
+          onClick={closeNow}
+          className="mt-2 text-sm text-white/85 underline underline-offset-4 hover:text-white"
         >
           Skip
         </button>
