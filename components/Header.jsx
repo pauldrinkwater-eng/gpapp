@@ -9,8 +9,8 @@ export default function Header() {
   const isHome = pathname === "/";
 
   return (
-    <header className="bg-white px-4 py-3 border-b border-gray-200">
-      <div className="mx-auto flex max-w-3xl items-center">
+    <header className="bg-white px-4 py-6 border-b border-gray-200">
+      <div className="mx-auto flex max-w-5xl items-center">
         {/* Back button (only if not home) */}
         {!isHome && (
           <button
@@ -26,7 +26,7 @@ export default function Header() {
           <img
             src="/icons/Google-Cover-Photo.png"
             alt="Malthouse Surgery Cover"
-            className="h-16 object-contain"
+            className="h-36 object-contain"
           />
         </Link>
       </div>
