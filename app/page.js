@@ -6,25 +6,29 @@ import ClientSplash from "../components/ClientSplash"; // client-only splash bri
 
 export const revalidate = 1800; // cache page for 30 minutes
 
-// Large row card (lighter heading font)
-function RowCard({ href, title, subtitle }) {
+// Reusable card link with "compact" option for small pills
+function RowCard({ href, title, subtitle, compact = false, className = "" }) {
   const isExternal = href?.startsWith("http") || href?.startsWith("tel:");
   const Cmp = isExternal ? "a" : Link;
   const props = { href };
 
+  const padding = compact ? "px-4 py-3" : "px-5 py-4";
+  const titleSize = compact ? "text-[15px]" : "text-[16px]";
+  const subtitleSize = compact ? "text-[13px]" : "text-[14px]";
+
   return (
     <Cmp
       {...props}
-      className="block rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm transition-shadow hover:shadow"
+      className={`block rounded-2xl border border-gray-200 bg-white ${padding} shadow-sm transition-shadow hover:shadow ${className}`}
       {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
     >
-      <div className="text-[16px] font-medium text-[#0b5fad]">{title}</div>
-      {subtitle && <div className="mt-1 text-[14px] text-gray-600">{subtitle}</div>}
+      <div className={`${titleSize} font-medium text-[#0b5fad]`}>{title}</div>
+      {subtitle && <div className={`mt-1 ${subtitleSize} text-gray-600`}>{subtitle}</div>}
     </Cmp>
   );
 }
 
-// Info tiles (Opening / Call / Find) – lighter heading font
+// Info tiles (Opening / Call / Find)
 function InfoTile({ title, children }) {
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
@@ -96,7 +100,7 @@ export default async function HomePage() {
         </a>
       </section>
 
-      {/* Opening, Call, Find */}
+      {/* Opening, Call, Find – three tiles */}
       <section>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <InfoTile title="Opening Hours">
@@ -133,22 +137,48 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Jump to… */}
+      {/* Jump to… — compact pills in a 4-across grid */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Jump to…</h2>
-        <div className="space-y-4">
-          <RowCard href="https://www.malthousesurgery.co.uk/contact-us" title="Contact the practice" />
-          <RowCard href="https://www.malthousesurgery.co.uk/practice-team" title="Practice Team" />
-          <RowCard href="https://www.malthousesurgery.co.uk/register-with-us" title="Register with our Practice" />
-          <RowCard href="https://www.malthousesurgery.co.uk/update-your-details" title="Update your Details" />
-          <RowCard href="https://www.nhs.uk/" title="Self-help & Resources" />
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <RowCard compact href="https://www.malthousesurgery.co.uk/contact-us" title="Contact the practice" />
+          <RowCard compact href="https://www.malthousesurgery.co.uk/practice-team" title="Practice Team" />
+          <RowCard compact href="https://www.malthousesurgery.co.uk/register-with-us" title="Register with our Practice" />
+          <RowCard compact href="https://www.malthousesurgery.co.uk/update-your-details" title="Update your Details" />
         </div>
       </section>
 
-      {/* Accessibility & Inclusion */}
+      {/* Self-help & Resources — two wide cards per row */}
+      <section>
+        <h2 className="mb-3 text-xl font-semibold text-gray-900">Self-help & Resources</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <RowCard
+            href="https://111.nhs.uk/"
+            title="NHS 111"
+            subtitle="Get medical help online or by phone."
+          />
+          <RowCard
+            href="https://www.nhs.uk/service-search/pharmacy/find-a-pharmacy"
+            title="Find a Pharmacy"
+            subtitle="Locate nearby pharmacies and opening hours."
+          />
+          <RowCard
+            href="https://www.nhs.uk/conditions/"
+            title="Health A–Z"
+            subtitle="Information about conditions, symptoms and treatments."
+          />
+          <RowCard
+            href="https://www.nhs.uk/live-well/"
+            title="Live Well"
+            subtitle="Tips, advice and support for healthy living."
+          />
+        </div>
+      </section>
+
+      {/* Accessibility & Inclusion — keep full width cards */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Accessibility & Inclusion</h2>
-        <div className="space-y-4">
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <RowCard
             href="https://www.malthousesurgery.co.uk/language-services"
             title="Language Services"
