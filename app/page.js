@@ -6,7 +6,7 @@ import ClientSplash from "../components/ClientSplash"; // client-only splash bri
 
 export const revalidate = 1800; // cache page for 30 minutes
 
-// Large row card (scaled up)
+// Large row card (lighter heading font)
 function RowCard({ href, title, subtitle }) {
   const isExternal = href?.startsWith("http") || href?.startsWith("tel:");
   const Cmp = isExternal ? "a" : Link;
@@ -18,17 +18,17 @@ function RowCard({ href, title, subtitle }) {
       className="block rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm transition-shadow hover:shadow"
       {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
     >
-      <div className="text-[16px] font-semibold text-[#0b5fad]">{title}</div>
+      <div className="text-[16px] font-medium text-[#0b5fad]">{title}</div>
       {subtitle && <div className="mt-1 text-[14px] text-gray-600">{subtitle}</div>}
     </Cmp>
   );
 }
 
-// Info tiles (Opening / Call / Find) to match the first app layout
+// Info tiles (Opening / Call / Find) – lighter heading font
 function InfoTile({ title, children }) {
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-      <div className="text-[16px] font-semibold">{title}</div>
+      <div className="text-[16px] font-medium">{title}</div>
       <div className="mt-1 text-[14px] text-gray-600">{children}</div>
     </div>
   );
@@ -42,7 +42,7 @@ export default async function HomePage() {
       {/* Splash overlay (first visit only) */}
       <ClientSplash />
 
-      {/* Welcome panel – scaled to match original */}
+      {/* Welcome panel */}
       <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
           Welcome to Malthouse Surgery
@@ -80,9 +80,9 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Flu clinics banner – larger like v1 */}
+      {/* Flu clinics banner */}
       <section className="rounded-2xl bg-blue-50 px-6 py-6 shadow-sm ring-1 ring-blue-100">
-        <h3 className="text-[18px] font-semibold text-gray-900">Flu Vaccination Clinics</h3>
+        <h3 className="text-[18px] font-medium text-gray-900">Flu Vaccination Clinics</h3>
         <p className="mt-2 text-[14px] text-gray-700">
           Flu and COVID vaccination clinics are now available to book.
         </p>
@@ -96,7 +96,7 @@ export default async function HomePage() {
         </a>
       </section>
 
-      {/* Opening, Call, Find – three big tiles (grid) */}
+      {/* Opening, Call, Find */}
       <section>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <InfoTile title="Opening Hours">
@@ -167,7 +167,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Latest news — live feed with slide + swipe */}
+      {/* Latest news */}
       <section>
         <NewsCarousel items={items} websiteNewsUrl="https://www.malthousesurgery.co.uk/news/" />
       </section>
@@ -182,7 +182,7 @@ export default async function HomePage() {
           href="https://forms.cloud.microsoft/e/i7END6yxWM"
           target="_blank"
           rel="noreferrer"
-          className="mt-2 inline-block text-[14px] font-semibold underline underline-offset-4"
+          className="mt-2 inline-block text-[14px] font-medium underline underline-offset-4"
         >
           Open Feedback Form →
         </a>
@@ -190,7 +190,7 @@ export default async function HomePage() {
 
       {/* Install instructions */}
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-        <h2 className="text-[15px] font-semibold">Add this app to your home screen</h2>
+        <h2 className="text-[15px] font-medium">Add this app to your home screen</h2>
         <p className="mt-1 text-[14px] text-gray-700">
           On iPhone/iPad: tap the share icon in Safari and choose <em>Add to Home Screen</em>. On Android/Chrome:
           open the menu (⋮) and choose <em>Install app</em>.
