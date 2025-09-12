@@ -25,7 +25,7 @@ export default function ClientSplash() {
           height={160}
           priority
           className="animate-mh-fade-in"
-          onError={() => setLogoSrc("/icons/icon-192x192.png")}
+          onError={() => setLogoSrc("/icons/192x192.png")}
         />
 
         {/* Welcome text */}
