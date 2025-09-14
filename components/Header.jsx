@@ -24,7 +24,7 @@ export default function Header() {
         {/* Cover photo (clickable, links home) */}
         <Link href="/" className="flex-grow flex justify-center">
           <img
-            src="/icons/Google-Cover-Photo.png"
+            src="/icons/Google-Cover-Photo.jpeg"
             alt="Malthouse Surgery Cover"
             className="h-36 object-contain"
           />
