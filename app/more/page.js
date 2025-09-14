@@ -1,7 +1,14 @@
 // app/more/page.js
 import Link from "next/link";
+import dynamic from "next/dynamic";
 
 export const revalidate = 3600; // cache for 1 hour
+
+// Client-only button that requests native push permission & registers the device
+const EnableNotifications = dynamic(
+  () => import("../../components/EnableNotifications"),
+  { ssr: false }
+);
 
 function RowCard({ href, title, subtitle, external = false }) {
   const Cmp = external ? "a" : Link;
@@ -30,24 +37,19 @@ export default async function MorePage() {
         </p>
       </header>
 
+      {/* NEW: Notifications */}
+      <section>
+        <EnableNotifications />
+      </section>
+
       {/* Quick actions */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Quick actions</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <RowCard href="/opening-hours" title="Opening Hours" subtitle="See today’s hours and holiday closures." />
           <RowCard href="/make-a-request" title="Online Requests" subtitle="Appointments, prescriptions, fit notes." />
-          <RowCard
-            href="tel:01235468860"
-            title="Call the Surgery"
-            subtitle="Tap to call 01235 468860"
-            external
-          />
-          <RowCard
-            href="https://maps.google.com/?q=Malthouse+Surgery"
-            title="Find Us"
-            subtitle="Open in Google Maps"
-            external
-          />
+          <RowCard href="tel:01235468860" title="Call the Surgery" subtitle="Tap to call 01235 468860" external />
+          <RowCard href="https://maps.google.com/?q=Malthouse+Surgery" title="Find Us" subtitle="Open in Google Maps" external />
         </div>
       </section>
 
@@ -55,30 +57,10 @@ export default async function MorePage() {
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Practice information</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <RowCard
-            href="https://www.malthousesurgery.co.uk/practice-team/"
-            title="Practice Team"
-            subtitle="Meet our clinicians and staff."
-            external
-          />
-          <RowCard
-            href="https://www.malthousesurgery.co.uk/register-with-our-practice/"
-            title="Register with our Practice"
-            subtitle="How to register and eligibility."
-            external
-          />
-          <RowCard
-            href="https://www.malthousesurgery.co.uk/update-your-details/"
-            title="Update your Details"
-            subtitle="Change address, phone or preferences."
-            external
-          />
-          <RowCard
-            href="https://www.malthousesurgery.co.uk/contact-the-practice/"
-            title="Contact the Practice"
-            subtitle="Best ways to get in touch."
-            external
-          />
+          <RowCard href="https://www.malthousesurgery.co.uk/practice-team/" title="Practice Team" subtitle="Meet our clinicians and staff." external />
+          <RowCard href="https://www.malthousesurgery.co.uk/register-with-our-practice/" title="Register with our Practice" subtitle="How to register and eligibility." external />
+          <RowCard href="https://www.malthousesurgery.co.uk/update-your-details/" title="Update your Details" subtitle="Change address, phone or preferences." external />
+          <RowCard href="https://www.malthousesurgery.co.uk/contact-the-practice/" title="Contact the Practice" subtitle="Best ways to get in touch." external />
         </div>
       </section>
 
@@ -86,36 +68,16 @@ export default async function MorePage() {
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Policies & accessibility</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <RowCard
-            href="https://www.malthousesurgery.co.uk/accessibility-statement/"
-            title="Accessibility Statement"
-            subtitle="Our commitment to accessible care."
-            external
-          />
-          <RowCard
-            href="https://www.malthousesurgery.co.uk/privacy-policy/"
-            title="Privacy Policy"
-            subtitle="How we use and protect your data."
-            external
-          />
-          <RowCard
-            href="https://malthousesurgery.co.uk/neurodiversity-strategy/"
-            title="Neurodiversity Passport"
-            subtitle="Tell us how to tailor your care."
-            external
-          />
+          <RowCard href="https://www.malthousesurgery.co.uk/accessibility-statement/" title="Accessibility Statement" subtitle="Our commitment to accessible care." external />
+          <RowCard href="https://www.malthousesurgery.co.uk/privacy-policy/" title="Privacy Policy" subtitle="How we use and protect your data." external />
+          <RowCard href="https://malthousesurgery.co.uk/neurodiversity-strategy/" title="Neurodiversity Passport" subtitle="Tell us how to tailor your care." external />
         </div>
       </section>
 
       {/* Feedback */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Feedback</h2>
-        <RowCard
-          href="https://forms.cloud.microsoft/e/i7END6yxWM"
-          title="App Feedback"
-          subtitle="Share ideas and report issues."
-          external
-        />
+        <RowCard href="https://forms.cloud.microsoft/e/i7END6yxWM" title="App Feedback" subtitle="Share ideas and report issues." external />
       </section>
 
       {/* App info */}
