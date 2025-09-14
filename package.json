@@ -12,7 +12,6 @@
     "@capacitor/core": "^7.4.3",
     "@capacitor/push-notifications": "^7.0.3",
     "next": "15.5.3",
-<<<<<<< HEAD
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "rss-parser": "^3.13.0"
@@ -32,20 +31,3 @@
   },
   "packageManager": "npm@10"
 }
-=======
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
-  },
-  "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^24.3.1",
-    "@types/react": "^19.1.12",
-    "@types/react-dom": "^19.1.9",
-    "eslint": "^9",
-    "eslint-config-next": "15.5.3",
-    "tailwindcss": "^4",
-    "typescript": "^5.9.2"
-  }
-}
->>>>>>> df49f83 (Add TypeScript and type dependencies)
