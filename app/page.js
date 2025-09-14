@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { getNews } from "../lib/getNews";
 import NewsCarousel from "../components/NewsCarousel";
+import AlertTicker from "../components/AlertTicker"; // ⟵ NEW: scrolling banner
 
 export const revalidate = 1800; // cache page for 30 minutes
 
@@ -40,8 +41,18 @@ function InfoTile({ title, children }) {
 export default async function HomePage() {
   const items = await getNews(5); // latest 5 posts from your site feed
 
+  // 🔔 Edit this array to control the banner items
+  const alerts = [
+    { text: "Flu clinics start 23 Sept — book via the link", href: "/flu" },
+    { text: "COVID boosters available for eligible patients", href: "/covid" },
+    { text: "Phones busier 8–10am: try Accurx requests for non-urgent issues", href: "/make-a-request" },
+  ];
+
   return (
     <div className="space-y-8 animate-page-fade">
+      {/* 🔔 Scrolling alert banner — sits just under the header/logo */}
+      <AlertTicker items={alerts} speed={28} />
+
       {/* Welcome panel */}
       <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
