@@ -12,7 +12,7 @@ export default function Splash({ children }) {
   if (show) {
     return (
       <div className="fixed inset-0 z-50 flex items-center justify-center bg-[#0b5fad] text-white">
-        <h1 className="text-3xl font-bold">Welcome</h1>
+        <h1 className="text-5xl font-extrabold -translate-y-12">Welcome</h1>
       </div>
     );
   }
