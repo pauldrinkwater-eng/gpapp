@@ -1,7 +1,6 @@
 // app/page.js (server component)
 import Link from "next/link";
 import { getNews } from "../lib/getNews";
-import NewsCarousel from "../components/NewsCarousel";
 import AlertTicker from "../components/AlertTicker"; // scrolling banner
 
 export const revalidate = 1800; // cache page for 30 minutes
@@ -39,7 +38,7 @@ function InfoTile({ title, children }) {
 }
 
 export default async function HomePage() {
-  const items = await getNews(5); // latest 5 posts from your site feed
+  const items = await getNews(5);
 
   // Build ticker items from latest news (title + URL).
   const newsAlerts = (items || []).map((n) => ({
@@ -125,7 +124,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Jump to… — compact pills in a 4-across grid */}
+      {/* Jump to… — compact pills */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Jump to…</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -137,7 +136,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Self-help & Resources — two wide cards per row */}
+      {/* Self-help & Resources */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Self-help & Resources</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -179,14 +178,6 @@ export default async function HomePage() {
             subtitle="Read our accessibility commitment and support."
           />
         </div>
-      </section>
-
-      {/* Latest news */}
-      <section>
-        <NewsCarousel
-          items={items}
-          websiteNewsUrl="https://www.malthousesurgery.co.uk/news/"
-        />
       </section>
 
       {/* Feedback */}
