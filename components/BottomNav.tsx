@@ -17,7 +17,7 @@ export default function BottomNav() {
   const navItems: NavItem[] = [
     { label: "Home", href: "/", icon: HomeIcon },
     { label: "News", href: "/news", icon: NewsIcon },
-    { label: "Requests", href: "/make-a-request", icon: RequestIcon },
+    { label: "Online Req", href: "/make-a-request", icon: RequestIcon },
     { label: "More", href: "/more", icon: MoreIcon },
   ];
 
