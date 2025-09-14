@@ -2,7 +2,6 @@
 import Link from "next/link";
 import { getNews } from "../lib/getNews";
 import NewsCarousel from "../components/NewsCarousel";
-import ClientSplash from "../components/ClientSplash"; // client-only splash bridge
 
 export const revalidate = 1800; // cache page for 30 minutes
 
@@ -43,9 +42,6 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-8 animate-page-fade">
-      {/* Splash overlay (first visit only) */}
-      <ClientSplash />
-
       {/* Welcome panel */}
       <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
