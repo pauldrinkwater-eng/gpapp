@@ -2,7 +2,7 @@
 import Link from "next/link";
 import { getNews } from "../lib/getNews";
 import NewsCarousel from "../components/NewsCarousel";
-import AlertTicker from "../components/AlertTicker"; // ⟵ NEW: scrolling banner
+import AlertTicker from "../components/AlertTicker"; // scrolling banner
 
 export const revalidate = 1800; // cache page for 30 minutes
 
@@ -41,17 +41,25 @@ function InfoTile({ title, children }) {
 export default async function HomePage() {
   const items = await getNews(5); // latest 5 posts from your site feed
 
-  // 🔔 Edit this array to control the banner items
-  const alerts = [
-    { text: "Flu clinics start 23 Sept — book via the link", href: "/flu" },
-    { text: "COVID boosters available for eligible patients", href: "/covid" },
-    { text: "Phones busier 8–10am: try Accurx requests for non-urgent issues", href: "/make-a-request" },
+  // Build ticker items from latest news (title + URL).
+  // If your getNews shape differs, tweak the fields below (e.g. n.link instead of n.url).
+  const newsAlerts = (items || []).map((n) => ({
+    text: n?.title ?? "News",
+    href: n?.url ?? n?.link ?? "https://www.malthousesurgery.co.uk/news/",
+  }));
+
+  // Optional: always-on manual items (appear before news)
+  const manualAlerts = [
+    // { text: "Phones busy 8–10am — try Accurx for non-urgent issues", href: "/make-a-request" },
+    // { text: "Flu clinics from 23 Sept — book now", href: "https://malthousesurgery.co.uk/flu-covid-vaccinations-autumn-winter-2025/" },
   ];
+
+  const alerts = [...manualAlerts, ...newsAlerts];
 
   return (
     <div className="space-y-8 animate-page-fade">
       {/* 🔔 Scrolling alert banner — sits just under the header/logo */}
-      <AlertTicker items={alerts} speed={28} />
+      <AlertTicker items={alerts} speed={36} />
 
       {/* Welcome panel */}
       <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
