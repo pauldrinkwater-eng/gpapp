@@ -42,23 +42,17 @@ export default async function HomePage() {
   const items = await getNews(5); // latest 5 posts from your site feed
 
   // Build ticker items from latest news (title + URL).
-  // If your getNews shape differs, tweak the fields below (e.g. n.link instead of n.url).
   const newsAlerts = (items || []).map((n) => ({
     text: n?.title ?? "News",
     href: n?.url ?? n?.link ?? "https://www.malthousesurgery.co.uk/news/",
   }));
 
-  // Optional: always-on manual items (appear before news)
-  const manualAlerts = [
-    // { text: "Phones busy 8–10am — try Accurx for non-urgent issues", href: "/make-a-request" },
-    // { text: "Flu clinics from 23 Sept — book now", href: "https://malthousesurgery.co.uk/flu-covid-vaccinations-autumn-winter-2025/" },
-  ];
-
+  const manualAlerts = [];
   const alerts = [...manualAlerts, ...newsAlerts];
 
   return (
     <div className="space-y-8 animate-page-fade">
-      {/* 🔔 Scrolling alert banner — sits just under the header/logo */}
+      {/* 🔔 Scrolling alert banner */}
       <AlertTicker items={alerts} speed={36} />
 
       {/* Welcome panel */}
@@ -70,33 +64,6 @@ export default async function HomePage() {
           Use this app to quickly access appointments, prescriptions, opening, and the latest updates.
           Everything links straight into our main website so you always get the most up-to-date information.
         </p>
-      </section>
-
-      {/* Make a Request */}
-      <section>
-        <h2 className="mb-3 text-xl font-semibold text-gray-900">Make a Request</h2>
-        <div className="space-y-4">
-          <RowCard
-            href="https://accurx.nhs.uk/patient-initiated/K84027/flow/medical-request"
-            title="Make an Appointment"
-            subtitle="Book or request a GP appointment online."
-          />
-          <RowCard
-            href="https://malthousesurgery.co.uk/order-your-repeat-prescription/"
-            title="Prescription Request"
-            subtitle="Order your repeat prescriptions online."
-          />
-          <RowCard
-            href="https://accurx.nhs.uk/patient-initiated/K84027/flow/fit-note"
-            title="Fit Note"
-            subtitle="Request or renew a fit note online."
-          />
-          <RowCard
-            href="https://www.malthousesurgery.co.uk/test-results"
-            title="Test Results"
-            subtitle="Check the results of your tests."
-          />
-        </div>
       </section>
 
       {/* Flu clinics banner */}
@@ -121,7 +88,10 @@ export default async function HomePage() {
           <InfoTile title="Opening Hours">
             See today’s hours and holiday closures.
             <div>
-              <Link href="/opening-hours" className="mt-2 inline-block text-[14px] font-medium text-[#0b5fad]">
+              <Link
+                href="/opening-hours"
+                className="mt-2 inline-block text-[14px] font-medium text-[#0b5fad]"
+              >
                 View hours
               </Link>
             </div>
@@ -130,7 +100,10 @@ export default async function HomePage() {
           <InfoTile title="Call Us">
             Tap to call the surgery.
             <div>
-              <a href="tel:01235468860" className="mt-2 inline-block text-[14px] font-medium text-[#0b5fad]">
+              <a
+                href="tel:01235468860"
+                className="mt-2 inline-block text-[14px] font-medium text-[#0b5fad]"
+              >
                 01235 468860
               </a>
             </div>
@@ -156,6 +129,7 @@ export default async function HomePage() {
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Jump to…</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <RowCard compact href="/make-a-request" title="Online Requests" />
           <RowCard compact href="https://malthousesurgery.co.uk/contact-the-practice/" title="Contact the practice" />
           <RowCard compact href="https://malthousesurgery.co.uk/practice-team/" title="Practice Team" />
           <RowCard compact href="https://malthousesurgery.co.uk/register-with-our-practice/" title="Register with our Practice" />
@@ -190,7 +164,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Accessibility & Inclusion — keep full width cards */}
+      {/* Accessibility & Inclusion */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Accessibility & Inclusion</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
@@ -209,12 +183,17 @@ export default async function HomePage() {
 
       {/* Latest news */}
       <section>
-        <NewsCarousel items={items} websiteNewsUrl="https://www.malthousesurgery.co.uk/news/" />
+        <NewsCarousel
+          items={items}
+          websiteNewsUrl="https://www.malthousesurgery.co.uk/news/"
+        />
       </section>
 
       {/* Feedback */}
       <section>
-        <h2 className="mb-3 text-xl font-semibold text-gray-900">App Rollout – Staff Feedback</h2>
+        <h2 className="mb-3 text-xl font-semibold text-gray-900">
+          App Rollout – Staff Feedback
+        </h2>
         <p className="text-[14px] text-gray-700">
           We’d love to hear your ideas on how this app could be most useful for patients and staff.
         </p>
@@ -232,11 +211,13 @@ export default async function HomePage() {
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
         <h2 className="text-[15px] font-medium">Add this app to your home screen</h2>
         <p className="mt-1 text-[14px] text-gray-700">
-          On iPhone/iPad: tap the share icon in Safari and choose <em>Add to Home Screen</em>. On Android/Chrome:
-          open the menu (⋮) and choose <em>Install app</em>.
+          On iPhone/iPad: tap the share icon in Safari and choose{" "}
+          <em>Add to Home Screen</em>. On Android/Chrome: open the menu (⋮) and
+          choose <em>Install app</em>.
         </p>
         <p className="mt-3 text-xs text-gray-500">
-          © 2025 Malthouse Surgery. Links open the official site at malthousesurgery.co.uk.
+          © 2025 Malthouse Surgery. Links open the official site at
+          malthousesurgery.co.uk.
         </p>
       </section>
     </div>
