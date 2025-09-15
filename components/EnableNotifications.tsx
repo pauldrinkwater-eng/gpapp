@@ -1,8 +1,8 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { PushNotifications } from "@capacitor/push-notifications";
 import { Capacitor } from "@capacitor/core";
-// (Optional) If you’ve set up Firebase for Android, PushNotifications will still give you a token on registration.
 
 type Status = "unknown" | "granted" | "denied" | "prompt" | "error";
 
@@ -12,12 +12,13 @@ export default function EnableNotifications() {
   const isNative = Capacitor.isNativePlatform();
 
   useEffect(() => {
-    // If running on web (not a native build), we won’t show the button here.
+    // On web (not a native build), show the informational card instead of the button
     if (!isNative) return setStatus("prompt");
+
     (async () => {
       try {
         const res = await PushNotifications.checkPermissions();
-        setStatus(res.receive as Status);
+        setStatus((res.receive as Status) ?? "unknown");
       } catch {
         setStatus("error");
       }
@@ -27,7 +28,7 @@ export default function EnableNotifications() {
   const enable = async () => {
     setLoading(true);
     try {
-      // Ask for permission (shows the iOS/Android system prompt)
+      // Ask for permission
       const perm = await PushNotifications.requestPermissions();
       if (perm.receive !== "granted") {
         setStatus("denied");
@@ -35,10 +36,10 @@ export default function EnableNotifications() {
         return;
       }
 
-      // Register with APNs (iOS) / FCM (Android)
+      // Register with APNs/FCM
       await PushNotifications.register();
 
-      // Get the token from the registration event
+      // Listen for the device token
       PushNotifications.addListener("registration", async (token) => {
         try {
           await fetch("/api/register-device", {
@@ -69,9 +70,10 @@ export default function EnableNotifications() {
 
   const openSystemSettings = async () => {
     try {
-      // Open OS settings so user can enable notifications if previously denied
-      const { App } = await import("@capacitor/app");
-      await App.openSettings();
+      // Use @capacitor/app-launcher instead of App.openSettings()
+      const { AppLauncher } = await import("@capacitor/app-launcher");
+      // iOS supports app-settings:, Android may no-op (safe)
+      await AppLauncher.openUrl({ url: "app-settings:" });
     } catch {
       // no-op
     }
