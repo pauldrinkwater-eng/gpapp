@@ -50,7 +50,7 @@ export default async function HomePage() {
   const alerts = [...manualAlerts, ...newsAlerts];
 
   return (
-    <div className="space-y-8 animate-page-fade">
+    <div className="space-y-8 animate-page-fade pb-[calc(112px+env(safe-area-inset-bottom))]">
       {/* 🔔 Scrolling alert banner */}
       <AlertTicker items={alerts} speed={36} />
 
