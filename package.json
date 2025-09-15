@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@capacitor/app": "^7.1.0",
+    "@capacitor/app-launcher": "^7.0.2",
     "@capacitor/core": "^7.4.3",
     "@capacitor/push-notifications": "^7.0.3",
     "next": "15.5.3",
