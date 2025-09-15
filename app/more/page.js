@@ -29,7 +29,7 @@ function RowCard({ href, title, subtitle, external = false }) {
 
 export default function MorePage() {
   return (
-    <div className="space-y-8 animate-page-fade px-5 py-6">
+    <div className="space-y-8 animate-page-fade px-5 py-6 pb-[calc(112px+env(safe-area-inset-bottom))]">
       <header className="space-y-1">
         <h1 className="text-2xl font-bold tracking-tight text-gray-900">More</h1>
         <p className="text-[15px] text-gray-600">
