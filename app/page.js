@@ -40,7 +40,7 @@ function TopCard({
         {/* Tagline */}
         <p className="mt-2 text-sm text-gray-600">{tagline}</p>
 
-        {/* Call button - now using emerald brand color */}
+        {/* Call button - emerald brand color */}
         <a
           href={`tel:${phone}`}
           className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-5 py-4 text-base font-bold text-white shadow-md transition hover:bg-emerald-700 active:scale-[0.99]"
@@ -113,16 +113,16 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-8 animate-page-fade pb-[calc(112px+env(safe-area-inset-bottom))]">
-      {/* 🔝 New Top Section */}
+      {/* 🔔 Scrolling alert banner at very top */}
+      <AlertTicker items={alerts} speed={36} />
+
+      {/* 🔝 Top Section */}
       <TopCard
         name="Malthouse Surgery"
         phone="01235468860"
         tagline="Providing NHS GP care to Abingdon"
         logo="/icons/512x512.png"
       />
-
-      {/* 🔔 Scrolling alert banner */}
-      <AlertTicker items={alerts} speed={36} />
 
       {/* Welcome panel */}
       <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
