@@ -38,7 +38,13 @@ function InfoTile({ title, children }) {
 }
 
 export default async function HomePage() {
-  const items = await getNews(5);
+  // Defensive: never let news fetch kill the page render
+  let items = [];
+  try {
+    items = await getNews(5);
+  } catch {
+    items = [];
+  }
 
   // Build ticker items from latest news (title + URL).
   const newsAlerts = (items || []).map((n) => ({
@@ -46,15 +52,14 @@ export default async function HomePage() {
     href: n?.url ?? n?.link ?? "https://www.malthousesurgery.co.uk/news/",
   }));
 
-  const manualAlerts = [];
-  const alerts = [...manualAlerts, ...newsAlerts];
+  const alerts = [...newsAlerts]; // add manual alerts here if needed
 
   return (
     <div className="space-y-8 animate-page-fade pb-[calc(112px+env(safe-area-inset-bottom))]">
       {/* 🔔 Scrolling alert banner */}
       <AlertTicker items={alerts} speed={36} />
 
-      {/* Welcome panel */}
+      {/* Welcome panel (TOP SECTION) */}
       <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
           Welcome to Malthouse Surgery
