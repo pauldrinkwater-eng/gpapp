@@ -134,5 +134,3 @@ export default async function HomePage() {
           website so you always get the most up-to-date information.
         </p>
       </section>
-
-      {/* ...rest of your page stays unchanged... */}
