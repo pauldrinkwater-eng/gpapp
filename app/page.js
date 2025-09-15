@@ -6,13 +6,12 @@ import AlertTicker from "../components/AlertTicker"; // scrolling banner
 
 export const revalidate = 1800; // cache page for 30 minutes
 
-// 📌 TopCard (new header card)
+// 📌 Simplified TopCard with emerald call button
 function TopCard({
   name = "Malthouse Surgery",
   phone = "01235468860",
   tagline = "Providing NHS GP care to Abingdon",
-  topImage = "/images/malthouse-thumb.jpg", // top floating image
-  midImage = "/images/malthouse-thumb.jpg", // middle image
+  logo = "/icons/512x512.png",
 }) {
   return (
     <section className="relative">
@@ -21,44 +20,31 @@ function TopCard({
 
       {/* White card content */}
       <div className="relative -mt-10 mx-auto w-full max-w-xl rounded-[24px] border border-gray-200 bg-white p-6 text-center shadow-xl">
-        {/* Floating image */}
-        <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
-          <div className="h-14 w-20 overflow-hidden rounded-xl border-4 border-white shadow-md">
-            <Image
-              src={topImage}
-              alt={`${name} photo`}
-              width={160}
-              height={112}
-              className="h-full w-full object-cover"
-              priority
-            />
-          </div>
-        </div>
-
-        {/* Name */}
-        <h1 className="mt-6 text-2xl font-extrabold tracking-tight text-[#1b2540]">
-          {name}
-        </h1>
-
-        {/* Middle image */}
-        <div className="mx-auto mt-3 h-12 w-20 overflow-hidden rounded-md border border-gray-200">
+        {/* Logo */}
+        <div className="mx-auto h-16 w-16 overflow-hidden rounded-full border border-gray-200 shadow-sm">
           <Image
-            src={midImage}
-            alt={`${name} building`}
-            width={160}
-            height={96}
-            className="h-full w-full object-cover"
+            src={logo}
+            alt={`${name} logo`}
+            width={64}
+            height={64}
+            className="h-full w-full object-contain"
+            priority
           />
         </div>
 
-        {/* Tagline */}
-        <p className="mt-3 text-sm text-gray-600">{tagline}</p>
+        {/* Practice name */}
+        <h1 className="mt-4 text-2xl font-extrabold tracking-tight text-[#1b2540]">
+          {name}
+        </h1>
 
-        {/* Call button */}
+        {/* Tagline */}
+        <p className="mt-2 text-sm text-gray-600">{tagline}</p>
+
+        {/* Call button - now using emerald brand color */}
         <a
           href={`tel:${phone}`}
-          className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#2fb4bf] px-5 py-4 text-base font-bold text-white shadow-md transition hover:opacity-95 active:scale-[0.99]"
-          aria-label={`Call ${name} on ${phone}`}
+          className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-emerald-600 px-5 py-4 text-base font-bold text-white shadow-md transition hover:bg-emerald-700 active:scale-[0.99]"
+          aria-label={`Call ${name}`}
         >
           {/* Phone icon */}
           <svg
@@ -74,7 +60,7 @@ function TopCard({
           >
             <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.8 19.8 0 0 1 11.19 19a19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.08 4.2 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.62 2.63a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.44-1.13a2 2 0 0 1 2.11-.45c.85.29 1.73.5 2.63.62A2 2 0 0 1 22 16.92z" />
           </svg>
-          <span>{phone}</span>
+          <span>Call Now</span>
         </a>
       </div>
     </section>
@@ -132,8 +118,7 @@ export default async function HomePage() {
         name="Malthouse Surgery"
         phone="01235468860"
         tagline="Providing NHS GP care to Abingdon"
-        topImage="/images/malthouse-thumb.jpg"
-        midImage="/images/malthouse-thumb.jpg"
+        logo="/icons/512x512.png"
       />
 
       {/* 🔔 Scrolling alert banner */}
