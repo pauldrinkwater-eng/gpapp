@@ -8,7 +8,7 @@ const config: CapacitorConfig = {
   // If you want the native shell to load your live Vercel site:
   server: {
     // TODO: replace with your real deployed URL
-    url: 'https://YOUR-DEPLOYED-URL', // e.g. https://malthouse-app.vercel.app
+    url: 'https://gpapp-kappa.vercel.app/', // e.g. https://malthouse-app.vercel.app
     androidScheme: 'https',
     cleartext: false,
   },
