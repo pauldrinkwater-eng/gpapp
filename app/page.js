@@ -1,11 +1,87 @@
 // app/page.js (server component)
+import Image from "next/image";
 import Link from "next/link";
 import { getNews } from "../lib/getNews";
 import AlertTicker from "../components/AlertTicker"; // scrolling banner
 
 export const revalidate = 1800; // cache page for 30 minutes
 
-// Reusable card link with "compact" option for small pills
+// 📌 TopCard (new header card)
+function TopCard({
+  name = "Malthouse Surgery",
+  phone = "01235468860",
+  tagline = "Providing NHS GP care to Abingdon",
+  topImage = "/images/malthouse-thumb.jpg", // top floating image
+  midImage = "/images/malthouse-thumb.jpg", // middle image
+}) {
+  return (
+    <section className="relative">
+      {/* Header background strip */}
+      <div className="h-24 w-full rounded-3xl bg-[#4e5c83]" />
+
+      {/* White card content */}
+      <div className="relative -mt-10 mx-auto w-full max-w-xl rounded-[24px] border border-gray-200 bg-white p-6 text-center shadow-xl">
+        {/* Floating image */}
+        <div className="absolute left-1/2 top-0 -translate-x-1/2 -translate-y-1/2">
+          <div className="h-14 w-20 overflow-hidden rounded-xl border-4 border-white shadow-md">
+            <Image
+              src={topImage}
+              alt={`${name} photo`}
+              width={160}
+              height={112}
+              className="h-full w-full object-cover"
+              priority
+            />
+          </div>
+        </div>
+
+        {/* Name */}
+        <h1 className="mt-6 text-2xl font-extrabold tracking-tight text-[#1b2540]">
+          {name}
+        </h1>
+
+        {/* Middle image */}
+        <div className="mx-auto mt-3 h-12 w-20 overflow-hidden rounded-md border border-gray-200">
+          <Image
+            src={midImage}
+            alt={`${name} building`}
+            width={160}
+            height={96}
+            className="h-full w-full object-cover"
+          />
+        </div>
+
+        {/* Tagline */}
+        <p className="mt-3 text-sm text-gray-600">{tagline}</p>
+
+        {/* Call button */}
+        <a
+          href={`tel:${phone}`}
+          className="mt-5 inline-flex w-full items-center justify-center gap-2 rounded-full bg-[#2fb4bf] px-5 py-4 text-base font-bold text-white shadow-md transition hover:opacity-95 active:scale-[0.99]"
+          aria-label={`Call ${name} on ${phone}`}
+        >
+          {/* Phone icon */}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className="h-5 w-5"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2A19.8 19.8 0 0 1 11.19 19a19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.08 4.2 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.9.33 1.78.62 2.63a2 2 0 0 1-.45 2.11L8.1 9.9a16 16 0 0 0 6 6l1.44-1.13a2 2 0 0 1 2.11-.45c.85.29 1.73.5 2.63.62A2 2 0 0 1 22 16.92z" />
+          </svg>
+          <span>{phone}</span>
+        </a>
+      </div>
+    </section>
+  );
+}
+
+// Reusable card link with "compact" option
 function RowCard({ href, title, subtitle, compact = false, className = "" }) {
   const isExternal = href?.startsWith("http") || href?.startsWith("tel:");
   const Cmp = isExternal ? "a" : Link;
@@ -22,7 +98,9 @@ function RowCard({ href, title, subtitle, compact = false, className = "" }) {
       {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
     >
       <div className={`${titleSize} font-medium text-[#0b5fad]`}>{title}</div>
-      {subtitle && <div className={`mt-1 ${subtitleSize} text-gray-600`}>{subtitle}</div>}
+      {subtitle && (
+        <div className={`mt-1 ${subtitleSize} text-gray-600`}>{subtitle}</div>
+      )}
     </Cmp>
   );
 }
@@ -40,17 +118,24 @@ function InfoTile({ title, children }) {
 export default async function HomePage() {
   const items = await getNews(5);
 
-  // Build ticker items from latest news (title + URL).
   const newsAlerts = (items || []).map((n) => ({
     text: n?.title ?? "News",
     href: n?.url ?? n?.link ?? "https://www.malthousesurgery.co.uk/news/",
   }));
 
-  const manualAlerts = [];
-  const alerts = [...manualAlerts, ...newsAlerts];
+  const alerts = [...[], ...newsAlerts];
 
   return (
     <div className="space-y-8 animate-page-fade pb-[calc(112px+env(safe-area-inset-bottom))]">
+      {/* 🔝 New Top Section */}
+      <TopCard
+        name="Malthouse Surgery"
+        phone="01235468860"
+        tagline="Providing NHS GP care to Abingdon"
+        topImage="/images/malthouse-thumb.jpg"
+        midImage="/images/malthouse-thumb.jpg"
+      />
+
       {/* 🔔 Scrolling alert banner */}
       <AlertTicker items={alerts} speed={36} />
 
@@ -60,14 +145,17 @@ export default async function HomePage() {
           Welcome to Malthouse Surgery
         </h1>
         <p className="mt-2 text-[15px] leading-6 text-gray-700">
-          Use this app to quickly access appointments, prescriptions, opening, and the latest updates.
-          Everything links straight into our main website so you always get the most up-to-date information.
+          Use this app to quickly access appointments, prescriptions, opening,
+          and the latest updates. Everything links straight into our main
+          website so you always get the most up-to-date information.
         </p>
       </section>
 
       {/* Flu clinics banner */}
       <section className="rounded-2xl bg-blue-50 px-6 py-6 shadow-sm ring-1 ring-blue-100">
-        <h3 className="text-[18px] font-medium text-gray-900">Flu Vaccination Clinics</h3>
+        <h3 className="text-[18px] font-medium text-gray-900">
+          Flu Vaccination Clinics
+        </h3>
         <p className="mt-2 text-[14px] text-gray-700">
           Flu and COVID vaccination clinics are now available to book.
         </p>
@@ -81,7 +169,7 @@ export default async function HomePage() {
         </a>
       </section>
 
-      {/* Opening, Call, Find – three tiles */}
+      {/* Opening, Call, Find */}
       <section>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
           <InfoTile title="Opening Hours">
@@ -124,21 +212,39 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Jump to… — compact pills */}
+      {/* Jump to… */}
       <section>
         <h2 className="mb-3 text-xl font-semibold text-gray-900">Jump to…</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <RowCard compact href="/make-a-request" title="Online Requests" />
-          <RowCard compact href="https://malthousesurgery.co.uk/contact-the-practice/" title="Contact the practice" />
-          <RowCard compact href="https://malthousesurgery.co.uk/practice-team/" title="Practice Team" />
-          <RowCard compact href="https://malthousesurgery.co.uk/register-with-our-practice/" title="Register with our Practice" />
-          <RowCard compact href="https://malthousesurgery.co.uk/update-your-details/" title="Update your Details" />
+          <RowCard
+            compact
+            href="https://malthousesurgery.co.uk/contact-the-practice/"
+            title="Contact the practice"
+          />
+          <RowCard
+            compact
+            href="https://malthousesurgery.co.uk/practice-team/"
+            title="Practice Team"
+          />
+          <RowCard
+            compact
+            href="https://malthousesurgery.co.uk/register-with-our-practice/"
+            title="Register with our Practice"
+          />
+          <RowCard
+            compact
+            href="https://malthousesurgery.co.uk/update-your-details/"
+            title="Update your Details"
+          />
         </div>
       </section>
 
       {/* Self-help & Resources */}
       <section>
-        <h2 className="mb-3 text-xl font-semibold text-gray-900">Self-help & Resources</h2>
+        <h2 className="mb-3 text-xl font-semibold text-gray-900">
+          Self-help & Resources
+        </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <RowCard
             href="https://111.nhs.uk/"
@@ -165,7 +271,9 @@ export default async function HomePage() {
 
       {/* Accessibility & Inclusion */}
       <section>
-        <h2 className="mb-3 text-xl font-semibold text-gray-900">Accessibility & Inclusion</h2>
+        <h2 className="mb-3 text-xl font-semibold text-gray-900">
+          Accessibility & Inclusion
+        </h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <RowCard
             href="https://malthousesurgery.co.uk/neurodiversity-strategy/"
