@@ -57,13 +57,27 @@ export default async function HomePage() {
 
   return (
     <div className="space-y-8 animate-page-fade pb-[calc(112px+env(safe-area-inset-bottom))]">
-      {/* 🔵 NHS-style top bar (in-page) */}
+      {/* 1) 🔔 Scrolling alert banner — now at the very top */}
+      <AlertTicker items={alerts} speed={36} />
+
+      {/* 2) Welcome panel */}
+      <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
+        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
+          Welcome to Malthouse Surgery
+        </h1>
+        <p className="mt-2 text-[15px] leading-6 text-gray-700">
+          Use this app to quickly access appointments, prescriptions, opening, and the latest updates.
+          Everything links straight into our main website so you always get the most up-to-date information.
+        </p>
+      </section>
+
+      {/* 3) 🔵 NHS-style banner (moved below welcome) — only "Call now" button */}
       <section
         className="rounded-2xl border border-blue-200/30 bg-[#005eb8] text-white shadow-sm"
         style={{ paddingTop: "env(safe-area-inset-top)" }}
       >
         <div className="mx-auto flex max-w-5xl items-center gap-4 px-5 py-3">
-          {/* Logo (adjust path if your logo filename differs) */}
+          {/* Logo */}
           <Link href="/" className="shrink-0 rounded-md bg-white/10 p-1.5 hover:bg-white/20">
             <Image
               src="/icons/logo-192.png"
@@ -80,36 +94,16 @@ export default async function HomePage() {
             <div className="truncate text-[12px] opacity-90">Abingdon Central PCN</div>
           </div>
 
-          {/* Quick actions */}
-          <div className="flex items-center gap-2">
+          {/* Quick action: Call only */}
+          <div className="flex items-center">
             <a
               href="tel:01235468860"
               className="rounded-xl bg-white px-3 py-2 text-[13px] font-semibold text-[#005eb8] shadow-sm hover:shadow"
             >
               Call now
             </a>
-            <Link
-              href="/make-a-request"
-              className="hidden sm:inline-block rounded-xl bg-white/10 px-3 py-2 text-[13px] font-semibold text-white ring-1 ring-inset ring-white/30 hover:bg-white/15"
-            >
-              Make a request
-            </Link>
           </div>
         </div>
-      </section>
-
-      {/* 🔔 Scrolling alert banner */}
-      <AlertTicker items={alerts} speed={36} />
-
-      {/* Welcome panel */}
-      <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
-        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
-          Welcome to Malthouse Surgery
-        </h1>
-        <p className="mt-2 text-[15px] leading-6 text-gray-700">
-          Use this app to quickly access appointments, prescriptions, opening, and the latest updates.
-          Everything links straight into our main website so you always get the most up-to-date information.
-        </p>
       </section>
 
       {/* Flu clinics banner */}
