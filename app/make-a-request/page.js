@@ -46,7 +46,7 @@ export default async function RequestsPage() {
           subtitle="Book or request a GP appointment online."
         />
         <RowCard
-          href="https://malthousesurgery.co.uk/order-your-repeat-prescription/"
+          href="https://accurx.nhs.uk/patient-initiated/K84027/flow/repeat-prescription"
           title="Prescription Request"
           subtitle="Order your repeat prescriptions online."
         />
