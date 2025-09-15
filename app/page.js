@@ -179,38 +179,6 @@ export default async function HomePage() {
           />
         </div>
       </section>
-
-      {/* Feedback */}
-      <section>
-        <h2 className="mb-3 text-xl font-semibold text-gray-900">
-          App Rollout – Staff Feedback
-        </h2>
-        <p className="text-[14px] text-gray-700">
-          We’d love to hear your ideas on how this app could be most useful for patients and staff.
-        </p>
-        <a
-          href="https://forms.cloud.microsoft/e/i7END6yxWM"
-          target="_blank"
-          rel="noreferrer"
-          className="mt-2 inline-block text-[14px] font-medium underline underline-offset-4"
-        >
-          Open Feedback Form →
-        </a>
-      </section>
-
-      {/* Install instructions */}
-      <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-        <h2 className="text-[15px] font-medium">Add this app to your home screen</h2>
-        <p className="mt-1 text-[14px] text-gray-700">
-          On iPhone/iPad: tap the share icon in Safari and choose{" "}
-          <em>Add to Home Screen</em>. On Android/Chrome: open the menu (⋮) and
-          choose <em>Install app</em>.
-        </p>
-        <p className="mt-3 text-xs text-gray-500">
-          © 2025 Malthouse Surgery. Links open the official site at
-          malthousesurgery.co.uk.
-        </p>
-      </section>
     </div>
   );
 }
