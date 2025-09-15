@@ -1,12 +1,10 @@
 // app/page.js (server component)
 import Link from "next/link";
-import Image from "next/image";
 import { getNews } from "../lib/getNews";
 import AlertTicker from "../components/AlertTicker"; // scrolling banner
 
 export const revalidate = 1800; // cache page for 30 minutes
 
-// Reusable card link with "compact" option for small pills
 function RowCard({ href, title, subtitle, compact = false, className = "" }) {
   const isExternal = href?.startsWith("http") || href?.startsWith("tel:");
   const Cmp = isExternal ? "a" : Link;
@@ -28,7 +26,6 @@ function RowCard({ href, title, subtitle, compact = false, className = "" }) {
   );
 }
 
-// Info tiles (Opening / Call / Find)
 function InfoTile({ title, children }) {
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
@@ -39,7 +36,6 @@ function InfoTile({ title, children }) {
 }
 
 export default async function HomePage() {
-  // Defensive: never let news fetch kill the page render
   let items = [];
   try {
     items = await getNews(5);
@@ -47,20 +43,19 @@ export default async function HomePage() {
     items = [];
   }
 
-  // Build ticker items from latest news (title + URL).
   const newsAlerts = (items || []).map((n) => ({
     text: n?.title ?? "News",
     href: n?.url ?? n?.link ?? "https://www.malthousesurgery.co.uk/news/",
   }));
 
-  const alerts = [...newsAlerts]; // add manual alerts here if needed
+  const alerts = [...newsAlerts];
 
   return (
     <div className="space-y-8 animate-page-fade pb-[calc(112px+env(safe-area-inset-bottom))]">
-      {/* 1) 🔔 Scrolling alert banner — now at the very top */}
+      {/* 🔔 News ticker at top */}
       <AlertTicker items={alerts} speed={36} />
 
-      {/* 2) Welcome panel */}
+      {/* Welcome panel */}
       <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
           Welcome to Malthouse Surgery
@@ -69,57 +64,6 @@ export default async function HomePage() {
           Use this app to quickly access appointments, prescriptions, opening, and the latest updates.
           Everything links straight into our main website so you always get the most up-to-date information.
         </p>
-      </section>
-
-      {/* 3) 🔵 NHS-style banner (moved below welcome) — only "Call now" button */}
-      <section
-        className="rounded-2xl border border-blue-200/30 bg-[#005eb8] text-white shadow-sm"
-        style={{ paddingTop: "env(safe-area-inset-top)" }}
-      >
-        <div className="mx-auto flex max-w-5xl items-center gap-4 px-5 py-3">
-          {/* Logo */}
-          <Link href="/" className="shrink-0 rounded-md bg-white/10 p-1.5 hover:bg-white/20">
-            <Image
-              src="/icons/logo-192.png"
-              alt="Malthouse Surgery logo"
-              width={36}
-              height={36}
-              priority
-            />
-          </Link>
-
-          {/* Practice name + PCN text */}
-          <div className="min-w-0 flex-1">
-            <div className="truncate text-[17px] font-semibold leading-5">Malthouse Surgery</div>
-            <div className="truncate text-[12px] opacity-90">Abingdon Central PCN</div>
-          </div>
-
-          {/* Quick action: Call only */}
-          <div className="flex items-center">
-            <a
-              href="tel:01235468860"
-              className="rounded-xl bg-white px-3 py-2 text-[13px] font-semibold text-[#005eb8] shadow-sm hover:shadow"
-            >
-              Call now
-            </a>
-          </div>
-        </div>
-      </section>
-
-      {/* Flu clinics banner */}
-      <section className="rounded-2xl bg-blue-50 px-6 py-6 shadow-sm ring-1 ring-blue-100">
-        <h3 className="text-[18px] font-medium text-gray-900">Flu Vaccination Clinics</h3>
-        <p className="mt-2 text-[14px] text-gray-700">
-          Flu and COVID vaccination clinics are now available to book.
-        </p>
-        <a
-          href="https://malthousesurgery.co.uk/flu-covid-vaccinations-autumn-winter-2025/"
-          target="_blank"
-          rel="noreferrer"
-          className="mt-4 inline-flex items-center gap-2 rounded-xl border border-blue-200 bg-white px-4 py-2 text-[14px] font-medium text-[#0b5fad] hover:shadow-sm"
-        >
-          Learn more →
-        </a>
       </section>
 
       {/* Opening, Call, Find – three tiles */}
