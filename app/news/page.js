@@ -8,7 +8,7 @@ export default async function NewsPage() {
   const items = await getNews(20); // fetch more than homepage carousel
 
   return (
-    <div className="space-y-6 animate-page-fade px-5 py-6">
+    <div className="space-y-6 animate-page-fade px-5 py-6 pb-[calc(112px+env(safe-area-inset-bottom))]">
       <h1 className="text-2xl font-bold tracking-tight text-gray-900">Latest News</h1>
       <p className="text-[15px] text-gray-600">
         Updates from Malthouse Surgery. Tap a headline to read the full story.
