@@ -22,11 +22,20 @@ function RowCard({ href, title, subtitle, className = "" }) {
 
 export default async function RequestsPage() {
   return (
-    <div className="space-y-8 animate-page-fade px-5 py-6">
+    <div className="space-y-8 animate-page-fade px-5 py-6 pb-[calc(112px+env(safe-area-inset-bottom))]">
       <header className="space-y-1">
         <h1 className="text-2xl font-bold tracking-tight text-gray-900">Online Requests</h1>
         <p className="text-[15px] text-gray-600">
-          Send non-urgent requests to the practice. For urgent medical help, use <a href="https://111.nhs.uk/" target="_blank" rel="noreferrer" className="underline underline-offset-2">NHS 111</a> or call 999 in an emergency.
+          Send non-urgent requests to the practice. For urgent medical help, use{" "}
+          <a
+            href="https://111.nhs.uk/"
+            target="_blank"
+            rel="noreferrer"
+            className="underline underline-offset-2"
+          >
+            NHS 111
+          </a>{" "}
+          or call 999 in an emergency.
         </p>
       </header>
 
