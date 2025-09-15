@@ -1,17 +1,23 @@
-import { CapacitorConfig } from '@capacitor/cli';
+// capacitor.config.ts
+import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'uk.co.malthouse.app',
   appName: 'Malthouse Surgery',
+
+  // If you want the native shell to load your live Vercel site:
   server: {
-    // point at your deployed site so updates come from Vercel
+    // TODO: replace with your real deployed URL
     url: 'https://YOUR-DEPLOYED-URL', // e.g. https://malthouse-app.vercel.app
-    cleartext: false,
     androidScheme: 'https',
+    cleartext: false,
   },
+
   ios: { contentInset: 'automatic' },
+
   plugins: {
-    SplashScreen: { launchShowDuration: 0 }
-  }
+    SplashScreen: { launchShowDuration: 0 },
+  },
 };
+
 export default config;
