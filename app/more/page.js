@@ -1,8 +1,8 @@
 // app/more/page.js
+"use client";
+
 import Link from "next/link";
 import dynamic from "next/dynamic";
-
-export const revalidate = 3600; // cache for 1 hour
 
 // Client-only button that requests native push permission & registers the device
 const EnableNotifications = dynamic(
@@ -27,7 +27,7 @@ function RowCard({ href, title, subtitle, external = false }) {
   );
 }
 
-export default async function MorePage() {
+export default function MorePage() {
   return (
     <div className="space-y-8 animate-page-fade px-5 py-6">
       <header className="space-y-1">
@@ -37,8 +37,12 @@ export default async function MorePage() {
         </p>
       </header>
 
-      {/* NEW: Notifications */}
-      <section>
+      {/* Notifications */}
+      <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+        <h2 className="mb-2 text-lg font-semibold text-gray-900">Notifications</h2>
+        <p className="mb-3 text-[14px] text-gray-700">
+          Turn on push notifications to get important updates from the surgery.
+        </p>
         <EnableNotifications />
       </section>
 
