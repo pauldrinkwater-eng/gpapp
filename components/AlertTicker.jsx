@@ -1,116 +1,169 @@
-// components/AlertTicker.jsx
-"use client";
+// app/page.js (server component)
 import Link from "next/link";
+import { getNews } from "../lib/getNews";
+import AlertTicker from "../components/AlertTicker"; // scrolling banner
 
-export default function AlertTicker({
-  items = [],
-  label = "IMPORTANT",
-  size = "sm",           // "sm" | "md"
-  speed,                 // keep for backwards compatibility; lower = slower
-  durationSec,           // override: exact seconds per loop
-}) {
-  if (!items?.length) return null;
+export const revalidate = 1800; // cache page for 30 minutes
 
-  // Visual scale based on size
-  const S = size === "md"
-    ? { padY: 8, padX: 12, gap: 20, badgeH: 26, badgeFS: 12, itemFS: 14, mask: 40 }
-    : { padY: 6, padX: 10, gap: 14, badgeH: 22, badgeFS: 11, itemFS: 13, mask: 28 };
+function RowCard({ href, title, subtitle, compact = false, className = "" }) {
+  const isExternal = href?.startsWith("http") || href?.startsWith("tel:");
+  const Cmp = isExternal ? "a" : Link;
+  const props = { href };
 
-  // Motion: slower by default; you can still pass speed or durationSec
-  // If 'speed' is provided, convert to a slower-friendly duration.
-  const derived = speed ? Math.max(22, Math.round(180 / Math.max(1, speed))) : undefined;
-  const loopSeconds = durationSec ?? derived ?? 28; // default: nice & slow
-
-  const renderItems = (keyPrefix) => (
-    <>
-      <span className="badge" key={`${keyPrefix}-badge`}>{label}</span>
-      {items.map((it, i) => {
-        const isExternal = it?.href?.startsWith("http");
-        const Cmp = isExternal ? "a" : Link;
-        const props = isExternal
-          ? { href: it.href, target: "_blank", rel: "noreferrer" }
-          : { href: it.href || "#" };
-        return (
-          <Cmp key={`${keyPrefix}-${i}`} {...props} className="item">
-            {it?.text ?? "Update"}
-          </Cmp>
-        );
-      })}
-    </>
-  );
+  const padding = compact ? "px-4 py-3" : "px-5 py-4";
+  const titleSize = compact ? "text-[15px]" : "text-[16px]";
+  const subtitleSize = compact ? "text-[13px]" : "text-[14px]";
 
   return (
-    <div
-      className="outer"
-      aria-label="Latest updates"
-      style={{
-        ["--loopSeconds"]: `${loopSeconds}s`,
-        ["--padY"]: `${S.padY}px`,
-        ["--padX"]: `${S.padX}px`,
-        ["--gap"]: `${S.gap}px`,
-        ["--mask"]: `${S.mask}px`,
-        ["--badgeH"]: `${S.badgeH}px`,
-        ["--badgeFS"]: `${S.badgeFS}px`,
-        ["--itemFS"]: `${S.itemFS}px`,
-      }}
+    <Cmp
+      {...props}
+      className={`block rounded-2xl border border-gray-200 bg-white ${padding} shadow-sm transition-shadow hover:shadow ${className}`}
+      {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
     >
-      <div className="inner">
-        <div className="track">
-          {renderItems("a")}
-          {renderItems("b")}
-        </div>
-      </div>
+      <div className={`${titleSize} font-medium text-[#0b5fad]`}>{title}</div>
+      {subtitle && <div className={`mt-1 ${subtitleSize} text-black`}>{subtitle}</div>}
+    </Cmp>
+  );
+}
 
-      <style jsx>{`
-        .outer {
-          position: relative;
-          overflow: hidden;
-          border-radius: 12px;
-          border: 1px solid rgba(11, 95, 173, 0.25);
-          background: #eef6ff;
-          padding: var(--padY) var(--padX);
-          -webkit-mask-image: linear-gradient(
-            to right, transparent, black var(--mask),
-            black calc(100% - var(--mask)), transparent
-          );
-          mask-image: linear-gradient(
-            to right, transparent, black var(--mask),
-            black calc(100% - var(--mask)), transparent
-          );
-        }
-        .inner { white-space: nowrap; }
-        .track {
-          display: inline-flex;
-          align-items: center;
-          gap: var(--gap);
-          padding-right: var(--gap);
-          animation: scroll var(--loopSeconds) linear infinite;
-        }
-        @keyframes scroll {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
-        .badge {
-          display: inline-flex;
-          align-items: center;
-          height: var(--badgeH);
-          padding: 0 10px;
-          border-radius: 9999px;
-          background: #0b5fad;
-          color: #fff;
-          font-weight: 800;
-          font-size: var(--badgeFS);
-          letter-spacing: 0.2px;
-        }
-        .item {
-          display: inline-block;
-          color: #111827;
-          font-size: var(--itemFS);
-          text-decoration: none;
-          line-height: 1.2;
-        }
-        .item:hover { text-decoration: underline; }
-      `}</style>
+function InfoTile({ title, children }) {
+  return (
+    <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
+      <div className="text-[16px] font-medium text-[#0b5fad]">{title}</div>
+      <div className="mt-1 text-[14px] text-black">{children}</div>
+    </div>
+  );
+}
+
+export default async function HomePage() {
+  let items = [];
+  try {
+    items = await getNews(5);
+  } catch {
+    items = [];
+  }
+
+  const newsAlerts = (items || []).map((n) => ({
+    text: n?.title ?? "News",
+    href: n?.url ?? n?.link ?? "https://www.malthousesurgery.co.uk/news/",
+  }));
+
+  const alerts = [...newsAlerts];
+
+  return (
+    <div className="space-y-8 animate-page-fade pb-[calc(112px+env(safe-area-inset-bottom))]">
+      {/* 🔔 News ticker at top */}
+      <AlertTicker items={alerts} size="sm" durationSec={36} />
+
+      {/* Welcome panel */}
+      <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
+        <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
+          Welcome to Malthouse Surgery
+        </h1>
+        <p className="mt-2 text-[15px] leading-6 text-gray-700">
+          Use this app to quickly access appointments, prescriptions, opening, and the latest updates.
+          Everything links straight into our main website so you always get the most up-to-date information.
+        </p>
+      </section>
+
+      {/* Opening, Call, Find – three tiles */}
+      <section>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
+          <InfoTile title="Opening Hours">
+            See today’s hours and holiday closures.
+            <div>
+              <Link
+                href="/opening-hours"
+                className="mt-2 inline-block text-[14px] font-medium text-[#0b5fad]"
+              >
+                View hours
+              </Link>
+            </div>
+          </InfoTile>
+
+          <InfoTile title="Call Us">
+            Tap to call the surgery.
+            <div>
+              <a
+                href="tel:01235468860"
+                className="mt-2 inline-block text-[14px] font-medium text-[#0b5fad]"
+              >
+                01235 468860
+              </a>
+            </div>
+          </InfoTile>
+
+          <InfoTile title="Find Us">
+            View map and directions.
+            <div>
+              <a
+                href="https://maps.google.com/?q=Malthouse+Surgery"
+                target="_blank"
+                rel="noreferrer"
+                className="mt-2 inline-block text-[14px] font-medium text-[#0b5fad]"
+              >
+                Open in Maps
+              </a>
+            </div>
+          </InfoTile>
+        </div>
+      </section>
+
+      {/* Jump to… — compact pills */}
+      <section>
+        <h2 className="mb-3 text-xl font-semibold text-[#0b5fad]">Jump to…</h2>
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          <RowCard compact href="/make-a-request" title="Online Requests" />
+          <RowCard compact href="https://malthousesurgery.co.uk/contact-the-practice/" title="Contact the practice" />
+          <RowCard compact href="https://malthousesurgery.co.uk/practice-team/" title="Practice Team" />
+          <RowCard compact href="https://gp-registration.nhs.uk/K84027/gpregistration/landing" title="Register with our Practice" />
+          <RowCard compact href="https://malthousesurgery.co.uk/update-your-details/" title="Update your Details" />
+        </div>
+      </section>
+
+      {/* Self-help & Resources */}
+      <section>
+        <h2 className="mb-3 text-xl font-semibold text-[#0b5fad]">Self-help & Resources</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <RowCard
+            href="https://111.nhs.uk/"
+            title="NHS 111"
+            subtitle="Get medical help online or by phone."
+          />
+          <RowCard
+            href="https://www.nhs.uk/service-search/pharmacy/find-a-pharmacy"
+            title="Find a Pharmacy"
+            subtitle="Locate nearby pharmacies and opening hours."
+          />
+          <RowCard
+            href="https://www.nhs.uk/conditions/"
+            title="Health A–Z"
+            subtitle="Information about conditions, symptoms and treatments."
+          />
+          <RowCard
+            href="https://www.nhs.uk/live-well/"
+            title="Live Well"
+            subtitle="Tips, advice and support for healthy living."
+          />
+        </div>
+      </section>
+
+      {/* Accessibility & Inclusion */}
+      <section>
+        <h2 className="mb-3 text-xl font-semibold text-[#0b5fad]">Accessibility & Inclusion</h2>
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+          <RowCard
+            href="https://malthousesurgery.co.uk/neurodiversity-strategy/"
+            title="Neurodiversity Passport"
+            subtitle="Tell us how we can make our practice accessible for you."
+          />
+          <RowCard
+            href="https://malthousesurgery.co.uk/accessibility-statement/"
+            title="Accessibility Statement"
+            subtitle="Read our accessibility commitment and support."
+          />
+        </div>
+      </section>
     </div>
   );
 }
