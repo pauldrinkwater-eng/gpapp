@@ -60,7 +60,7 @@ export default async function HomePage() {
       <AlertTicker items={alerts} size="sm" durationSec={36} />
 
       {/* Welcome panel */}
-      <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
+      <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100 text-center">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
           Welcome to Malthouse Surgery
         </h1>
