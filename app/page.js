@@ -62,7 +62,9 @@ export default async function HomePage() {
       {/* Welcome panel */}
       <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100 text-center">
         <h1 className="text-3xl font-extrabold tracking-tight text-gray-900">
-          Welcome to Malthouse Surgery
+          Welcome to
+          <br />
+          Malthouse Surgery
         </h1>
         <p className="mt-2 text-[15px] leading-6 text-gray-700">
           This app is designed to make it easier for patients to access our services. 
