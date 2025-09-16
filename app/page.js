@@ -116,7 +116,7 @@ export default async function HomePage() {
           <RowCard compact href="/make-a-request" title="Online Requests" />
           <RowCard compact href="https://malthousesurgery.co.uk/contact-the-practice/" title="Contact the practice" />
           <RowCard compact href="https://malthousesurgery.co.uk/practice-team/" title="Practice Team" />
-          <RowCard compact href="https://malthousesurgery.co.uk/register-with-our-practice/" title="Register with our Practice" />
+          <RowCard compact href="https://gp-registration.nhs.uk/K84027/gpregistration/landing" title="Register with our Practice" />
           <RowCard compact href="https://malthousesurgery.co.uk/update-your-details/" title="Update your Details" />
         </div>
       </section>
