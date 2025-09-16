@@ -11,7 +11,8 @@ function Row({ label, value }) {
 
 export default function OpeningHoursPage() {
   return (
-    <div className="space-y-6">
+    // Added pb-24 so content clears the bottom nav
+    <div className="space-y-6 pb-24">
       {/* Green intro panel (matches home) */}
       <section className="rounded-2xl bg-green-50 p-5 shadow-sm ring-1 ring-green-100">
         <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
