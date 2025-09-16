@@ -20,8 +20,10 @@ function RowCard({ href, title, subtitle, compact = false, className = "" }) {
       className={`block rounded-2xl border border-gray-200 bg-white ${padding} shadow-sm transition-shadow hover:shadow ${className}`}
       {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
     >
+      {/* NHS blue titles */}
       <div className={`${titleSize} font-medium text-[#0b5fad]`}>{title}</div>
-      {subtitle && <div className={`mt-1 ${subtitleSize} text-gray-600`}>{subtitle}</div>}
+      {/* Black subtext */}
+      {subtitle && <div className={`mt-1 ${subtitleSize} text-black`}>{subtitle}</div>}
     </Cmp>
   );
 }
@@ -29,8 +31,10 @@ function RowCard({ href, title, subtitle, compact = false, className = "" }) {
 function InfoTile({ title, children }) {
   return (
     <div className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
-      <div className="text-[16px] font-medium">{title}</div>
-      <div className="mt-1 text-[14px] text-gray-600">{children}</div>
+      {/* NHS blue titles */}
+      <div className="text-[16px] font-medium text-[#0b5fad]">{title}</div>
+      {/* Black subtext */}
+      <div className="mt-1 text-[14px] text-black">{children}</div>
     </div>
   );
 }
@@ -111,7 +115,7 @@ export default async function HomePage() {
 
       {/* Jump to… — compact pills */}
       <section>
-        <h2 className="mb-3 text-xl font-semibold text-gray-900">Jump to…</h2>
+        <h2 className="mb-3 text-xl font-semibold text-[#0b5fad]">Jump to…</h2>
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <RowCard compact href="/make-a-request" title="Online Requests" />
           <RowCard compact href="https://malthousesurgery.co.uk/contact-the-practice/" title="Contact the practice" />
@@ -123,7 +127,7 @@ export default async function HomePage() {
 
       {/* Self-help & Resources */}
       <section>
-        <h2 className="mb-3 text-xl font-semibold text-gray-900">Self-help & Resources</h2>
+        <h2 className="mb-3 text-xl font-semibold text-[#0b5fad]">Self-help & Resources</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <RowCard
             href="https://111.nhs.uk/"
@@ -150,7 +154,7 @@ export default async function HomePage() {
 
       {/* Accessibility & Inclusion */}
       <section>
-        <h2 className="mb-3 text-xl font-semibold text-gray-900">Accessibility & Inclusion</h2>
+        <h2 className="mb-3 text-xl font-semibold text-[#0b5fad]">Accessibility & Inclusion</h2>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <RowCard
             href="https://malthousesurgery.co.uk/neurodiversity-strategy/"
