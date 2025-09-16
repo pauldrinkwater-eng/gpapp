@@ -2,11 +2,24 @@
 "use client";
 import Link from "next/link";
 
-export default function AlertTicker({ items = [], speed = 36, label = "IMPORTANT" }) {
+export default function AlertTicker({
+  items = [],
+  label = "IMPORTANT",
+  size = "sm",           // "sm" | "md"
+  speed,                 // keep for backwards compatibility; lower = slower
+  durationSec,           // override: exact seconds per loop
+}) {
   if (!items?.length) return null;
 
-  // Higher 'speed' -> faster scroll; floor duration so it never goes too fast
-  const durationSec = Math.max(14, Math.round(120 / Math.max(1, speed)));
+  // Visual scale based on size
+  const S = size === "md"
+    ? { padY: 8, padX: 12, gap: 20, badgeH: 26, badgeFS: 12, itemFS: 14, mask: 40 }
+    : { padY: 6, padX: 10, gap: 14, badgeH: 22, badgeFS: 11, itemFS: 13, mask: 28 };
+
+  // Motion: slower by default; you can still pass speed or durationSec
+  // If 'speed' is provided, convert to a slower-friendly duration.
+  const derived = speed ? Math.max(22, Math.round(180 / Math.max(1, speed))) : undefined;
+  const loopSeconds = durationSec ?? derived ?? 28; // default: nice & slow
 
   const renderItems = (keyPrefix) => (
     <>
@@ -27,7 +40,20 @@ export default function AlertTicker({ items = [], speed = 36, label = "IMPORTANT
   );
 
   return (
-    <div className="outer" aria-label="Latest updates" style={{ ["--duration"]: `${durationSec}s` }}>
+    <div
+      className="outer"
+      aria-label="Latest updates"
+      style={{
+        ["--loopSeconds"]: `${loopSeconds}s`,
+        ["--padY"]: `${S.padY}px`,
+        ["--padX"]: `${S.padX}px`,
+        ["--gap"]: `${S.gap}px`,
+        ["--mask"]: `${S.mask}px`,
+        ["--badgeH"]: `${S.badgeH}px`,
+        ["--badgeFS"]: `${S.badgeFS}px`,
+        ["--itemFS"]: `${S.itemFS}px`,
+      }}
+    >
       <div className="inner">
         <div className="track">
           {renderItems("a")}
@@ -39,57 +65,49 @@ export default function AlertTicker({ items = [], speed = 36, label = "IMPORTANT
         .outer {
           position: relative;
           overflow: hidden;
-          border-radius: 0.75rem;
-          border: 1px solid rgba(11, 95, 173, 0.3);
-          background: #eaf4ff;
-          padding: 8px 12px;
-          /* Fade edges so content never looks clipped/overrunning */
+          border-radius: 12px;
+          border: 1px solid rgba(11, 95, 173, 0.25);
+          background: #eef6ff;
+          padding: var(--padY) var(--padX);
           -webkit-mask-image: linear-gradient(
-            to right,
-            transparent,
-            black 40px,
-            black calc(100% - 40px),
-            transparent
+            to right, transparent, black var(--mask),
+            black calc(100% - var(--mask)), transparent
           );
           mask-image: linear-gradient(
-            to right,
-            transparent,
-            black 40px,
-            black calc(100% - 40px),
-            transparent
+            to right, transparent, black var(--mask),
+            black calc(100% - var(--mask)), transparent
           );
         }
-        .inner {
-          white-space: nowrap;
-        }
+        .inner { white-space: nowrap; }
         .track {
           display: inline-flex;
           align-items: center;
-          gap: 2rem;
-          padding-right: 2rem; /* spacing before the loop joins */
-          animation: scroll var(--duration) linear infinite;
+          gap: var(--gap);
+          padding-right: var(--gap);
+          animation: scroll var(--loopSeconds) linear infinite;
         }
         @keyframes scroll {
           from { transform: translateX(0); }
-          to   { transform: translateX(-50%); }
+          to { transform: translateX(-50%); }
         }
         .badge {
           display: inline-flex;
           align-items: center;
-          height: 28px;
+          height: var(--badgeH);
           padding: 0 10px;
           border-radius: 9999px;
-          background: #0b5fad; /* NHS blue */
+          background: #0b5fad;
           color: #fff;
           font-weight: 800;
-          font-size: 12px;
-          letter-spacing: 0.3px;
+          font-size: var(--badgeFS);
+          letter-spacing: 0.2px;
         }
         .item {
           display: inline-block;
-          color: #111827; /* black-ish text */
-          font-size: 14px;
+          color: #111827;
+          font-size: var(--itemFS);
           text-decoration: none;
+          line-height: 1.2;
         }
         .item:hover { text-decoration: underline; }
       `}</style>
