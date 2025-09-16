@@ -57,7 +57,7 @@ export default async function HomePage() {
   return (
     <div className="space-y-8 animate-page-fade pb-[calc(112px+env(safe-area-inset-bottom))]">
       {/* 🔔 News ticker at top */}
-      <AlertTicker items={alerts} speed={36} />
+      <AlertTicker items={alerts} size="sm" durationSec={36} />
 
       {/* Welcome panel */}
       <section className="rounded-2xl bg-emerald-50/60 px-6 py-6 shadow-sm ring-1 ring-emerald-100">
@@ -65,8 +65,9 @@ export default async function HomePage() {
           Welcome to Malthouse Surgery
         </h1>
         <p className="mt-2 text-[15px] leading-6 text-gray-700">
-          Use this app to quickly access appointments, prescriptions, opening, and the latest updates.
-          Everything links straight into our main website so you always get the most up-to-date information.
+          This app is designed to make it easier for patients to access our services. 
+          You can book appointments, request repeat prescriptions, check our opening 
+          times and stay informed with the latest updates from the practice.
         </p>
       </section>
 
