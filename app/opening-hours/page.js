@@ -1,4 +1,11 @@
-"use client";
+// app/opening-hours/page.js
+'use client';
+
+export const metadata = {
+  title: 'Opening hours – Malthouse Surgery',
+  description: 'Regular opening times, extended hours, and bank holiday information.',
+  // ❗ Do not put themeColor here (it lives in app/layout.js -> export const viewport)
+};
 
 function Row({ label, value }) {
   return (
@@ -11,9 +18,9 @@ function Row({ label, value }) {
 
 export default function OpeningHoursPage() {
   return (
-    // Added pb-24 so content clears the bottom nav
-    <div className="space-y-6 pb-24">
-      {/* Green intro panel (matches home) */}
+    // pb-24 so content clears the fixed bottom nav (plus safe area on iOS)
+    <div className="space-y-6 pb-[calc(96px+env(safe-area-inset-bottom))]">
+      {/* Intro panel */}
       <section className="rounded-2xl bg-green-50 p-5 shadow-sm ring-1 ring-green-100">
         <h1 className="text-2xl font-extrabold tracking-tight text-gray-900">
           Opening Hours
@@ -24,21 +31,21 @@ export default function OpeningHoursPage() {
         </p>
       </section>
 
-      {/* Regular hours as a white rounded card */}
+      {/* Regular hours */}
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
         <h2 className="mb-3 text-base font-semibold text-nhs-blue">Regular Hours</h2>
         <div>
-          <Row label="Monday" value="08:00 – 18:30" />
-          <Row label="Tuesday" value="08:00 – 18:30" />
+          <Row label="Monday"    value="08:00 – 18:30" />
+          <Row label="Tuesday"   value="08:00 – 18:30" />
           <Row label="Wednesday" value="08:00 – 18:30" />
-          <Row label="Thursday" value="08:00 – 18:30" />
-          <Row label="Friday" value="08:00 – 18:30" />
-          <Row label="Saturday" value="Closed" />
-          <Row label="Sunday" value="Closed" />
+          <Row label="Thursday"  value="08:00 – 18:30" />
+          <Row label="Friday"    value="08:00 – 18:30" />
+          <Row label="Saturday"  value="Closed" />
+          <Row label="Sunday"    value="Closed" />
         </div>
       </section>
 
-      {/* Extended hours card */}
+      {/* Extended hours */}
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
         <h2 className="mb-2 text-base font-semibold text-nhs-blue">Extended Hours</h2>
         <p className="text-sm text-gray-700">
@@ -47,7 +54,7 @@ export default function OpeningHoursPage() {
         </p>
       </section>
 
-      {/* Bank holidays card */}
+      {/* Bank holidays */}
       <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-sm">
         <h2 className="mb-2 text-base font-semibold text-nhs-blue">Bank Holidays</h2>
         <p className="text-sm text-gray-700">
