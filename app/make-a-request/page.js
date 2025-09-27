@@ -1,18 +1,24 @@
 // app/make-a-request/page.js
-import Link from "next/link";
+import Link from 'next/link';
+
+export const metadata = {
+  title: 'Online requests – Malthouse Surgery',
+  description: 'Submit non-urgent requests: appointments, repeat prescriptions, and fit notes.',
+};
 
 export const revalidate = 1800; // cache for 30 minutes
 
-function RowCard({ href, title, subtitle, className = "" }) {
-  const isExternal = href?.startsWith("http") || href?.startsWith("tel:");
-  const Cmp = isExternal ? "a" : Link;
-  const props = { href };
+function RowCard({ href, title, subtitle, className = '' }) {
+  const isExternal = href?.startsWith('http') || href?.startsWith('tel:');
+  const Cmp = isExternal ? 'a' : Link;
+  const props = isExternal
+    ? { href, target: '_blank', rel: 'noopener noreferrer' }
+    : { href };
 
   return (
     <Cmp
       {...props}
       className={`block rounded-2xl border border-gray-200 bg-white px-5 py-4 shadow-sm transition-shadow hover:shadow ${className}`}
-      {...(isExternal ? { target: "_blank", rel: "noreferrer" } : {})}
     >
       <div className="text-[16px] font-medium text-[#0b5fad]">{title}</div>
       {subtitle && <div className="mt-1 text-[14px] text-gray-600">{subtitle}</div>}
@@ -20,21 +26,21 @@ function RowCard({ href, title, subtitle, className = "" }) {
   );
 }
 
-export default async function RequestsPage() {
+export default function RequestsPage() {
   return (
     <div className="space-y-8 animate-page-fade px-5 py-6 pb-[calc(112px+env(safe-area-inset-bottom))]">
       <header className="space-y-1">
         <h1 className="text-2xl font-bold tracking-tight text-gray-900">Online Requests</h1>
         <p className="text-[15px] text-gray-600">
-          Send non-urgent requests to the practice. For urgent medical help, use{" "}
+          Send non-urgent requests to the practice. For urgent medical help, use{' '}
           <a
             href="https://111.nhs.uk/"
             target="_blank"
-            rel="noreferrer"
+            rel="noopener noreferrer"
             className="underline underline-offset-2"
           >
             NHS 111
-          </a>{" "}
+          </a>{' '}
           or call 999 in an emergency.
         </p>
       </header>
