@@ -7,7 +7,6 @@ import Splash from "../components/Splash";
 export const metadata = {
   title: "Malthouse Surgery",
   description: "Patient app",
-  // ✅ Keep PWA bits here (but NOT themeColor)
   manifest: "/manifest.json",
   icons: {
     icon: "/icons/192x192.png",
@@ -20,22 +19,17 @@ export const metadata = {
   },
 };
 
-// ✅ Move themeColor from metadata → viewport
+// ✅ Move themeColor here, out of metadata
 export const viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
-  // Light/Dark friendly; or use a single string "#005EB8" if you prefer
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#005EB8" }, // NHS Blue
-    { media: "(prefers-color-scheme: dark)",  color: "#0B0B0B" },
-  ],
+  themeColor: "#005EB8", // NHS Blue
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      {/* pb-16 makes room for the fixed footer; safe-area for iOS */}
       <body
         className="min-h-screen bg-white pb-16"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
