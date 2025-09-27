@@ -1,7 +1,7 @@
 // app/page.js (server component)
 import Link from 'next/link';
 import AlertNewsClient from '../components/AlertNewsClient';
-import { openMaps } from '../components/OpenInMaps';
+import OpenInMapsButton from '../components/OpenInMapsButton';
 
 export const revalidate = 1800; // cache page shell for 30 minutes
 
@@ -85,12 +85,7 @@ export default function HomePage() {
           <InfoTile title="Find Us">
             View map and directions.
             <div>
-              <button
-                onClick={() => openMaps('Malthouse Surgery, Abingdon, Oxfordshire')}
-                className="mt-2 inline-block text-[14px] font-medium text-[#0b5fad] underline"
-              >
-                Open in Maps
-              </button>
+              <OpenInMapsButton address="Malthouse Surgery, Abingdon, Oxfordshire" />
             </div>
           </InfoTile>
         </div>
