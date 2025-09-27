@@ -1,11 +1,50 @@
 // app/news/page.js
-import { getNews } from "../../lib/getNews";
-import Link from "next/link";
+'use client';
 
-export const revalidate = 1800; // cache page for 30 minutes
+import { useEffect, useState } from 'react';
+import Link from 'next/link';
 
-export default async function NewsPage() {
-  const items = await getNews(20); // fetch more than homepage carousel
+export const metadata = {
+  title: 'News – Malthouse Surgery',
+  description: 'Latest updates and announcements from Malthouse Surgery.',
+};
+
+export default function NewsPage() {
+  const [items, setItems] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const ctrl = new AbortController();
+    const timeout = setTimeout(() => ctrl.abort(), 10000); // 10s safety
+
+    fetch(
+      'https://www.malthousesurgery.co.uk/wp-json/wp/v2/posts?per_page=20&_fields=id,date,title,link,excerpt',
+      { signal: ctrl.signal }
+    )
+      .then(async (r) => {
+        if (!r.ok) throw new Error('Bad response');
+        const posts = await r.json();
+        setItems(
+          posts.map((p) => ({
+            id: p.id,
+            title: p.title?.rendered || 'News',
+            url: p.link,
+            date: p.date,
+            summary: p.excerpt?.rendered?.replace(/<[^>]+>/g, '') ?? '',
+          }))
+        );
+      })
+      .catch(() => setItems([]))
+      .finally(() => {
+        clearTimeout(timeout);
+        setLoading(false);
+      });
+
+    return () => {
+      clearTimeout(timeout);
+      ctrl.abort();
+    };
+  }, []);
 
   return (
     <div className="space-y-6 animate-page-fade px-5 py-6 pb-[calc(112px+env(safe-area-inset-bottom))]">
@@ -15,22 +54,26 @@ export default async function NewsPage() {
       </p>
 
       <ul className="divide-y divide-gray-200 rounded-2xl border border-gray-200 bg-white shadow-sm">
-        {items && items.length > 0 ? (
-          items.map((item, idx) => (
-            <li key={idx} className="p-4 hover:bg-gray-50">
+        {loading ? (
+          <li className="p-4 text-sm text-gray-500">Loading news…</li>
+        ) : items.length > 0 ? (
+          items.map((item) => (
+            <li key={item.id} className="p-4 hover:bg-gray-50">
               <a
-                href={item.url ?? item.link ?? "#"}
+                href={item.url}
                 target="_blank"
                 rel="noreferrer"
                 className="block"
               >
-                <div className="text-[16px] font-medium text-[#0b5fad]">{item.title}</div>
+                <div className="text-[16px] font-medium text-[#0b5fad]">
+                  {item.title}
+                </div>
                 {item.date && (
                   <div className="mt-1 text-xs text-gray-500">
-                    {new Date(item.date).toLocaleDateString("en-GB", {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
+                    {new Date(item.date).toLocaleDateString('en-GB', {
+                      day: 'numeric',
+                      month: 'short',
+                      year: 'numeric',
                     })}
                   </div>
                 )}
