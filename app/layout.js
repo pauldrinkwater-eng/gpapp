@@ -7,12 +7,11 @@ import Splash from "../components/Splash";
 export const metadata = {
   title: "Malthouse Surgery",
   description: "Patient app",
-  // PWA bits
-  themeColor: "#005EB8", // NHS Blue
+  // ✅ Keep PWA bits here (but NOT themeColor)
   manifest: "/manifest.json",
   icons: {
-    icon: "/icons/192x192.png",   // favicon / install icon (Chrome)
-    apple: "/icons/192x192.png",  // iOS home screen icon
+    icon: "/icons/192x192.png",
+    apple: "/icons/192x192.png",
   },
   appleWebApp: {
     capable: true,
@@ -21,11 +20,16 @@ export const metadata = {
   },
 };
 
-// Ensures proper safe areas on iOS (Next.js App Router way)
+// ✅ Move themeColor from metadata → viewport
 export const viewport = {
   width: "device-width",
   initialScale: 1,
   viewportFit: "cover",
+  // Light/Dark friendly; or use a single string "#005EB8" if you prefer
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#005EB8" }, // NHS Blue
+    { media: "(prefers-color-scheme: dark)",  color: "#0B0B0B" },
+  ],
 };
 
 export default function RootLayout({ children }) {
