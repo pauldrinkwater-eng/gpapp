@@ -8,9 +8,11 @@
     "start": "next start"
   },
   "dependencies": {
+    "@capacitor/android": "^7.4.3",
     "@capacitor/app": "^7.1.0",
     "@capacitor/app-launcher": "^7.0.2",
     "@capacitor/core": "^7.4.3",
+    "@capacitor/ios": "^7.4.3",
     "@capacitor/push-notifications": "^7.0.3",
     "next": "15.5.3",
     "react": "18.3.1",
