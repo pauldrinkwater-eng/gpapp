@@ -1,4 +1,3 @@
-// components/OpenInMapsButton.jsx
 'use client';
 
 import { openMaps } from './OpenInMaps';
