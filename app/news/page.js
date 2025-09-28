@@ -1,5 +1,3 @@
-cat > app/news/page.js <<'EOF'
-// app/news/page.js
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -11,7 +9,7 @@ export default function NewsPage() {
 
   useEffect(() => {
     const ctrl = new AbortController();
-    const timeout = setTimeout(() => ctrl.abort(), 10000);
+    const t = setTimeout(() => ctrl.abort(), 10000);
 
     fetch(
       'https://www.malthousesurgery.co.uk/wp-json/wp/v2/posts?per_page=20&_fields=id,date,title,link,excerpt',
@@ -32,12 +30,12 @@ export default function NewsPage() {
       })
       .catch(() => setItems([]))
       .finally(() => {
-        clearTimeout(timeout);
+        clearTimeout(t);
         setLoading(false);
       });
 
     return () => {
-      clearTimeout(timeout);
+      clearTimeout(t);
       ctrl.abort();
     };
   }, []);
@@ -90,4 +88,3 @@ export default function NewsPage() {
     </div>
   );
 }
-EOF
