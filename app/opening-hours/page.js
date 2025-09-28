@@ -1,5 +1,3 @@
-cat > app/opening-hours/page.js <<'EOF'
-// app/opening-hours/page.js
 'use client';
 
 function Row({ label, value }) {
@@ -52,4 +50,3 @@ export default function OpeningHoursPage() {
     </div>
   );
 }
-EOF
