@@ -1,3 +1,4 @@
+cat > app/opening-hours/page.js <<'EOF'
 // app/opening-hours/page.js
 'use client';
 
@@ -51,3 +52,4 @@ export default function OpeningHoursPage() {
     </div>
   );
 }
+EOF
