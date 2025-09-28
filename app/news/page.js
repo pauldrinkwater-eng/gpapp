@@ -1,3 +1,4 @@
+cat > app/news/page.js <<'EOF'
 // app/news/page.js
 'use client';
 
@@ -89,3 +90,4 @@ export default function NewsPage() {
     </div>
   );
 }
+EOF
