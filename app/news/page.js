@@ -4,18 +4,13 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 
-export const metadata = {
-  title: 'News – Malthouse Surgery',
-  description: 'Latest updates and announcements from Malthouse Surgery.',
-};
-
 export default function NewsPage() {
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const ctrl = new AbortController();
-    const timeout = setTimeout(() => ctrl.abort(), 10000); // 10s safety
+    const timeout = setTimeout(() => ctrl.abort(), 10000);
 
     fetch(
       'https://www.malthousesurgery.co.uk/wp-json/wp/v2/posts?per_page=20&_fields=id,date,title,link,excerpt',
@@ -59,15 +54,8 @@ export default function NewsPage() {
         ) : items.length > 0 ? (
           items.map((item) => (
             <li key={item.id} className="p-4 hover:bg-gray-50">
-              <a
-                href={item.url}
-                target="_blank"
-                rel="noreferrer"
-                className="block"
-              >
-                <div className="text-[16px] font-medium text-[#0b5fad]">
-                  {item.title}
-                </div>
+              <a href={item.url} target="_blank" rel="noreferrer" className="block">
+                <div className="text-[16px] font-medium text-[#0b5fad]">{item.title}</div>
                 {item.date && (
                   <div className="mt-1 text-xs text-gray-500">
                     {new Date(item.date).toLocaleDateString('en-GB', {
@@ -78,9 +66,7 @@ export default function NewsPage() {
                   </div>
                 )}
                 {item.summary && (
-                  <div className="mt-2 text-[14px] text-gray-700 line-clamp-2">
-                    {item.summary}
-                  </div>
+                  <div className="mt-2 text-[14px] text-gray-700 line-clamp-2">{item.summary}</div>
                 )}
               </a>
             </li>
