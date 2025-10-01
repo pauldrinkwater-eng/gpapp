@@ -4,19 +4,17 @@ import type { CapacitorConfig } from '@capacitor/cli';
 const config: CapacitorConfig = {
   appId: 'uk.co.malthouse.app',
   appName: 'Malthouse Surgery',
+  webDir: 'out', // this must match your Next.js export folder
+  bundledWebRuntime: false,
 
-  // If you want the native shell to load your live Vercel site:
-  server: {
-    // TODO: replace with your real deployed URL
-    url: 'https://gpapp-kappa.vercel.app/', // e.g. https://malthouse-app.vercel.app
-    androidScheme: 'https',
-    cleartext: false,
+  ios: {
+    contentInset: 'automatic',
   },
 
-  ios: { contentInset: 'automatic' },
-
   plugins: {
-    SplashScreen: { launchShowDuration: 0 },
+    SplashScreen: {
+      launchShowDuration: 0,
+    },
   },
 };
 
