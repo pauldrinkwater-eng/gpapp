@@ -1,21 +1,15 @@
+cat > capacitor.config.ts <<'EOF'
 // capacitor.config.ts
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'uk.co.malthouse.app',
   appName: 'Malthouse Surgery',
-  webDir: 'out', // this must match your Next.js export folder
+  webDir: 'out',
   bundledWebRuntime: false,
-
-  ios: {
-    contentInset: 'automatic',
-  },
-
-  plugins: {
-    SplashScreen: {
-      launchShowDuration: 0,
-    },
-  },
+  ios: { contentInset: 'automatic' },
+  plugins: { SplashScreen: { launchShowDuration: 0 } }
 };
 
 export default config;
+EOF
