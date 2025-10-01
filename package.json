@@ -1,4 +1,3 @@
-cat > package.json <<'EOF'
 {
   "name": "gpapp",
   "version": "0.1.0",
@@ -39,4 +38,3 @@ cat > package.json <<'EOF'
   },
   "packageManager": "npm@10"
 }
-EOF
