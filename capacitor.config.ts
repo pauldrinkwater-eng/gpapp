@@ -1,4 +1,4 @@
-cat > capacitor.config.ts <<'EOF'
+// capacitor.config.ts
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
@@ -11,4 +11,3 @@ const config: CapacitorConfig = {
 };
 
 export default config;
-EOF
